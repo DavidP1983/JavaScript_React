@@ -12,72 +12,149 @@
 
 5) Добавить нумерацию выведенных фильмов */
 
-'use strict';
+"use strict";
 
-const movieDB = {
-    movies: [
-        "Логан",
-        "Лига справедливости",
-        "Ла-ла лэнд",
-        "Одержимость",
-        "Скотт Пилигрим против..."
-    ]
-};
-
-// task#1
-const advertising = document.querySelectorAll('img');
-console.dir(advertising);
-for (let i = 1; i < advertising.length; i++) {
-    advertising[i].remove();
-
-}
-/*
-Solution:
-const adv = document.querySelectorAll('.promo__adv img');
-adv.forEach(item =>{
-item.remove();
-});
-*/
+document.addEventListener("DOMContentLoaded", () => {
+    const movieDB = {
+        movies: [
+            "Логан",
+            "Лига справедливости",
+            "Ла-ла лэнд",
+            "Одержимость",
+            "Скотт Пилигрим против...",
+        ],
+    };
 
 
-// task#2
-const genre = document.getElementsByClassName('promo__genre');
-console.log(genre);
-genre[0].textContent = 'ДРАМА';
+    const adv = document.querySelectorAll('.promo__adv img'),
+        promo = document.querySelector('.promo__bg'),
+        genre = promo.querySelector('.promo__genre');
+
+    // task #1
+    const deleteAdv = (arr) => {
+        arr.forEach(item => {
+            item.remove();
+        });
+    };
 
 
-// task#3
-const promo = document.getElementsByClassName('promo__bg');
-console.log(promo);
-let photo = '../img/bg.jpg';
-let photo2 = "center center/cover no-repeat";
-promo[0].style.background = `url(${photo})${photo2}`;
-promo[0].style['background-position'] = 'top';
-/*
-Second and third task we will do together because  selector ('promo__genre') is inside
-("promo__bg");
+    // task #2
+    const makeChages = () => {
+        genre.textContent = 'ДРАМА';
+        promo.style.backgroundImage = 'url("img/bg.jpg")';
 
-const promo = document.querySelectorAll('.promo__bg'),
-      genre = poster.querySelector('.promo__genre');
+    };
 
-      genre.textContent = 'ДРАМА'; //task #2
 
-      promo.style.backgroundImage = 'url("img/bg.jpg")';
+    const sortArr = (arr) => {
+        arr.sort();
 
-*/ 
+    };
 
-//Task#4
-const addmovies = document.querySelector('.promo__interactive-list');
-console.log(addmovies);
 
-addmovies.innerHTML = ""; // delete all content of the <ul> element i.e <li>
-movieDB.movies.sort();
+    const addmovies = document.querySelector(".promo__interactive-list");
+    // const deleteMov = document.querySelectorAll('.delete');
 
-movieDB.movies.forEach(function (item, i) {
-    addmovies.innerHTML +=
-        `<li class="promo__interactive-item">${i+1}. ${item} 
-        <div class="delete"></div> 
-        </li>`;
-// here we are creating  a new <li> elements in <ul>
-// sign '+' we use to add each time a new element
+
+    // task #3 
+    function creatMoviesList(films, parent) {
+
+        sortArr(films);
+        parent.innerHTML = "";
+
+        films.forEach(function (item, i) {
+            parent.innerHTML +=
+                `<li class="promo__interactive-item">${i + 1}. ${item} 
+                <div class="delete"></div> 
+             </li>`;
+        });
+
+        // delete movies
+
+        document.querySelectorAll('.delete').forEach((bin, i) => {
+            // console.log(bin);
+            bin.addEventListener('click', () => {
+
+                bin.parentElement.remove();
+                movieDB.movies.splice(i, 1);
+                //  console.log(movieDB);
+
+                //we are colling the function in itself to organize counting 
+                creatMoviesList(movieDB.movies, addmovies);
+                // creatMoviesList(films, parent); the same  
+
+
+            });
+
+        });
+    }
+
+
+    // Add Movies
+
+    const addForm = document.querySelector('form.add'),
+        addInput = addForm.querySelector('.adding__input'),
+        check = addForm.querySelector('[type="checkbox"]');
+
+
+    addForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        let newFilm = addInput.value;
+        const favorite = check.checked;
+
+        if (newFilm) { //if it false i.e (" "), dont execute else ->
+
+            if (newFilm.length > 10) {
+                newFilm = `${newFilm.substr(0, 11)}...`;
+            }
+            if (favorite) {
+                alert("New film has been added");
+                console.log("New film has been added");
+            }
+
+            movieDB.movies.push(newFilm);
+            // sortArr(movieDB.movies);
+
+            creatMoviesList(movieDB.movies, addmovies);
+
+        }
+
+        //  movieDB.movies.push(newFilm);
+        //  sortArr(movieDB.movies);   
+        // creatMoviesList(movieDB.movies, addmovies);
+
+        event.target.reset(); // clean the form i.e clean input field and checkbox
+
+
+    });
+
+
+    creatMoviesList(movieDB.movies, addmovies); //inside this fucntion we are also sorting the films
+    // addmovies.innerHTML = ""; 
+    // movieDB.movies.forEach(function (item, i) {
+    //     addmovies.innerHTML += `<li class="promo__interactive-item">${
+    //   i + 1
+    // }. ${item} 
+    //     <div class="delete"></div> 
+    //     </li>`;
+    // });
+
+    deleteAdv(adv);
+    // adv.forEach(item =>{
+    // item.remove();
+    // });
+
+
+    makeChages();
+    // const promo = document.querySelector('.promo__bg'),
+    // genre = promo.querySelector('.promo__genre');
+
+    // genre.textContent = 'ДРАМА'; //task #2
+
+    // promo.style.backgroundImage = 'url("img/bg.jpg")';
+
+    sortArr(movieDB.movies);
+    // movieDB.movies.sort();
+
 });
