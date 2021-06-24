@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setClock('.timer', deadLine);
 
 
-                                 //Modal
+    //Modal
 
     const callModalWindow = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal'),
@@ -242,5 +242,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // // openModal();
     // }
     // });
+
+
+
+    // *****************Using Class for Cards****************** //
+
+    class MenuCard {
+        constructor(src, alt, title, desc, price, parentSelector) {
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.desc = desc;
+            this.price = price;
+            this.parent = document.querySelector(parentSelector);
+            this.currency = 27;
+            this.changeToCad(); //can call this method directly here
+
+        }
+        changeToCad() {
+            this.price *= +this.currency; // '+' if it will be a string we convert to Number
+
+        }
+
+        render() {
+            // or
+            // this.changeToCad(); 
+            const element = document.createElement('div');
+            element.innerHTML = ` 
+         <div class="menu__item">
+              <img src= ${this.src} alt= ${this.alt}>
+              <h3 class="menu__item-subtitle">${this.title}</h3>
+              <div class="menu__item-descr">${this.desc}</div>
+              <div class="menu__item-divider"></div>
+              <div class="menu__item-price">
+                  <div class="menu__item-cost">Цена:</div>
+                  <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+              </div>
+          </div>`;
+          this.parent.append(element);
+        }
+
+
+    }
+
+    // const div = new MenuCard();
+    // div.render();
+
+    //or if we use once this script with method, object
+
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        9,
+        '.menu .container'
+
+
+    ).render(); // only one time, then it will be deleted
+
+
+
 
 });
