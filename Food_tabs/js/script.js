@@ -265,7 +265,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         newCard() {
             const element = document.createElement('div');
+            if(this.classes.length === 0){
+                this.class = 'menu__item';
+                element.classList.add(this.class);
+
+            }else{
             this.classes.forEach(className => element.classList.add(className));
+            }
             element.innerHTML =
                 ` 
             <img src=${this.src} alt=${this.alt}>
@@ -291,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
         9,
         ".menu .container",
-        "menu__item", "test"
+       
 
     ).newCard();
 
