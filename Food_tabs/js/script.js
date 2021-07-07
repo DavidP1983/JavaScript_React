@@ -141,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //Modal
 
     const callModalWindow = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalClose = modal.querySelector('[data-close]');
+        modal = document.querySelector('.modal');
+        // modalClose = modal.querySelector('[data-close]');
 
 
     // *****************  Open Modal *********************//
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //CloseModal will work after 'click'
-    modalClose.addEventListener('click', closeModal); //() =>{
+    // modalClose.addEventListener('click', closeModal); //() =>{
 
     //         modal.classList.add('hide');
     //         modal.classList.remove('show');
@@ -195,14 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ********** Close Modal on white space ********** //
 
-    window.addEventListener('click', (event) => {
-        if (event.target == modal) {
-            modal.classList.remove('show');
-        }
-    });
+    // window.addEventListener('click', (event) => {
+    //     if (event.target == modal) {
+    //         modal.classList.remove('show');
+    //     }
+    // });
     // the same as window object
     modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
+        if (event.target === modal || event.target.getAttribute('data-close') == '') {
 
             closeModal();
 
@@ -301,5 +301,97 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ).newCard();
 
+    // Server Side AJAX
+
+const forms = document.querySelectorAll('form');
+
+const message = {
+loading: "img/form/spinner.svg",
+success: "Thank you, call you back later",
+fail: "Samething went wrong"
+};
+
+
+forms.forEach(item =>{
+postData(item);
+});
+
+    function postData(form){
+        form.addEventListener('submit', (e) =>{
+            e.preventDefault();
+
+            // const statusMessage = document.createElement('div');
+            const statusMessage = document.createElement('img');
+
+            statusMessage.src = message.loading;
+            // statusMessage.textContent = message.loading;
+            statusMessage.style.cssText = `display: block; margin: 0 auto;`;
+            // form.append(statusMessage);
+            form.insertAdjacentElement('afterend', statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            //request.setRequestHeader('Content-type', 'multipart/form-data');
+            request.setRequestHeader('Content-type', 'application/json');
+
+
+
+            const formData = new FormData(form);
+
+            const obj = {};
+
+            formData.forEach(function(value, key){
+                obj[key] = value;
+            });
+
+            const json = JSON.stringify(obj);
+
+            // request.send(formData);
+               request.send(json);
+
+            request.addEventListener('load', () =>{
+                if(request.status == 200){
+                    console.log(request.response);
+                    // statusMessage.textContent = message.success;
+                    showThanksModal(message.success);
+                    form.reset();
+                    // setTimeout(() =>{
+                    //     statusMessage.remove();
+                    // }, 2000);
+                    statusMessage.remove();
+                }else{
+                    // statusMessage.textContent = message.fail;
+                    showThanksModal(message.fail);
+                }
+            });
+
+        });
+    }
+
+    //Thanks Modal
+
+
+    function showThanksModal(message){
+        const modalDialog = document.querySelector('.modal__dialog');
+        modalDialog.classList.add('hide');
+
+        openModal();
+
+        const  thanksModal = document.createElement('div');
+            thanksModal.classList.add('modal__dialog');
+            thanksModal.innerHTML = 
+            `<div class = modal__content>
+               <div data-close class="modal__close">×</div>
+               <div class="modal__title">${message}</div>
+            </div>
+            `;
+            document.querySelector('.modal').append(thanksModal);
+            setTimeout(() =>{
+                thanksModal.remove();
+                modalDialog.classList.add('show');
+                modalDialog.classList.remove('hide');
+                closeModal();
+            },4000);
+    }
 
 });
