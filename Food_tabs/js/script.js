@@ -290,16 +290,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    new MenuCard(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container",
+// Creating Function 
+
+
+    const getData = async (url) =>{
+        const res = await fetch(url);
+
+        if(!res.ok){
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
+
+        return await res.json();
+    };
+
+    // getData(' http://localhost:3000/menu')
+    // .then(data =>{
+
+    //     data.forEach(({img, altimg, title, descr, price}) =>{
+    //         new MenuCard(img, altimg, title, descr, price, ".menu .container").newCard();
+    //     });
+    // });
+
+        axios.get(' http://localhost:3000/menu')
+        .then(data => { 
+            data.data.forEach(({img, altimg, title, descr, price}) =>{
+                    new MenuCard(img, altimg, title, descr, price, ".menu .container").newCard();
+                });
+        });
+    // new MenuCard(
+    //     "img/tabs/vegy.jpg",
+    //     "elite",
+    //     'Меню “Премиум',
+    //     'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    //     9,
+    //     ".menu .container",
        
 
-    ).newCard();
+    // ).newCard();
+
+    // new MenuCard(
+    //     "img/tabs/elite.jpg",
+    //     "vegy",
+    //     'Меню "Фитнес"',
+    //     'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    //     14,
+    //     ".menu .container",
+    //     'menu__item'
+       
+
+    // ).newCard();
+
+    // new MenuCard(
+    //     "img/tabs/post.jpg",
+    //     "post",
+    //     'Меню "Постное"',
+    //     'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    //     17,
+    //     ".menu .container",
+        
+       
+
+    // ).newCard();
+
 
     // Server Side AJAX
 
@@ -313,10 +365,21 @@ fail: "Samething went wrong"
 
 
 forms.forEach(item =>{
-postData(item);
+bindpostData(item);
 });
 
-    function postData(form){
+// Creating function 
+
+const postData = async (url, data) => {
+const result = await fetch(url, {
+    method: "POST",
+    headers:{'Content-type': 'application/json'},
+    body: data
+});
+return await result.json();
+};
+
+    function bindpostData(form){
         form.addEventListener('submit', (e) =>{
             e.preventDefault();
 
@@ -344,25 +407,30 @@ postData(item);
 
             const formData = new FormData(form);
 
-            const obj = {};
+            // const obj = {};
 
-            formData.forEach(function(value, key){
-                obj[key] = value;
-            });
+            // formData.forEach(function(value, key){
+            //     obj[key] = value;
+            // });
 
             // const json = JSON.stringify(obj);
+
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+
 
             // request.send(formData);
             //request.send(json);
 
              // NEW version
 
-             fetch('server.php',{
-                method: "POST",
-                headers:{'Content-type': 'application/json'},
-                body:JSON.stringify(obj)
-            })
-            .then(data => data.text())
+            //  fetch('server.php',{
+            //     method: "POST",
+            //     headers:{'Content-type': 'application/json'},
+            //     body:JSON.stringify(obj)
+            // })
+
+            postData('http://localhost:3000/requests', json)
+            // .then(data => data.text())
             .then(data =>{
                 console.log(data);
                 showThanksModal(message.success);
@@ -418,6 +486,9 @@ postData(item);
             },4000);
     }
 
-    
+    // fetch('db.json')
+    fetch('http://localhost:3000/menu')
+    .then(data => data.json())
+    .then(result => console.log(result));
 
 });
