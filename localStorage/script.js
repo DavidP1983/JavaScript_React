@@ -34,7 +34,7 @@ localStorage.removeItem('bg');
 form.style.backgroundColor = '#fff';
 }else{
     localStorage.setItem('bg', 'changed');
-    form.style.backgroundColor = 'red';
+    form.style.backgroundColor = 'blue';
 }
 });
 
