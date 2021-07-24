@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ******* Set TimeOut to open the Modal ******* //
 
-    const modalTimerId = setTimeout(openModal, 5000);
+    const modalTimerId = setTimeout(openModal, 100000);
 
 
     // ******* Open Modal by the end of the scrolling ********* //
@@ -565,6 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
           total = document.querySelector('#total'),
           current = document.querySelector('#current');
           let slideIndex = 1;
+          let timer;
 
           showSlides();
 
@@ -584,6 +585,9 @@ document.addEventListener('DOMContentLoaded', () => {
               slides.forEach(item =>{
                 item.style.display = 'none';
               });
+              slides.forEach(anim =>{
+                anim.classList.add('fade');
+              });
               slides[slideIndex - 1].style.display = 'block';
             
               if(slides.length < 10){
@@ -591,6 +595,10 @@ document.addEventListener('DOMContentLoaded', () => {
               }else{
                   current.textContent = slideIndex;
               }
+
+              clearTimeout(timer); 
+               timer = setTimeout(() => plusSlides(1), 2000);
+              
           }
 
           function plusSlides(n){
@@ -617,6 +625,8 @@ document.addEventListener('DOMContentLoaded', () => {
         width = window.getComputedStyle(slidesWrapper).width;
     let offset = 0;
     let slideIndex = 1;
+   
+ 
 
     if (slides.length < 10) {
         total.textContent = `0${slides.length}`;
@@ -626,6 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
         current.textContent = slideIndex;
     }
 
+    
     slidesField.style.width = 100 * slides.length + '%';
     slides.forEach(item => {
         item.style.width = width;
@@ -676,13 +687,34 @@ function dotsOpacity(){
         dots[slideIndex -1].style.opacity = 1;
 }
 
+// Timer
+
+setInterval(function(){   
+      
+    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+        offset = 0;
+    } else {
+        offset += +width.slice(0, width.length - 2);
+    }
+    slidesField.style.transform = `translateX(-${offset}px)`;
+    if (slideIndex == slides.length) {
+        slideIndex = 1;
+    } else {
+        slideIndex++;
+    }
+    
+    current.textContent = addLeadingZero(slideIndex);
+    dotsOpacity();
+},5000);
+
+
     next.addEventListener('click', () => {
         if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
             offset = 0;
         } else {
             offset += +width.slice(0, width.length - 2);
         }
-
+        
         if (slideIndex == slides.length) {
             slideIndex = 1;
         } else {
@@ -694,6 +726,7 @@ function dotsOpacity(){
         // dots.forEach(item => item.style.opacity = '.1' );
         // dots[slideIndex -1].style.opacity = 1;
         dotsOpacity();
+       
     });
 
     prev.addEventListener('click', () => {
@@ -702,7 +735,7 @@ function dotsOpacity(){
         } else {
             offset -= +width.slice(0, width.length - 2);
         }
-
+        
         if (slideIndex == 1) {
             slideIndex = slides.length;
         } else {
@@ -718,6 +751,9 @@ function dotsOpacity(){
         // dots.forEach(item => item.style.opacity = '.5' );
         // dots[slideIndex -1].style.opacity = 1;
         dotsOpacity();
+      
+   
+        
     });
 
     dots.forEach(item =>{
@@ -736,5 +772,6 @@ function dotsOpacity(){
             dotsOpacity();
         });
     });
-
+          
+      
 });
