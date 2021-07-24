@@ -29,5 +29,5 @@
 // const str = 'My name is R2D2';
 // console.log(str.match(/\w\d\w\d/i));
 
-const str = 'My name is R2D2';
+const str = 'My name is R2D3';
  console.log(str.match(/\D/ig));
