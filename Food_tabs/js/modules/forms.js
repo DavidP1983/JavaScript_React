@@ -1,7 +1,10 @@
-function forms(){
+import {closeModal, openModal} from './modal';
+import{postData} from '../services/sevices';
+
+function forms(formSelector,modalTimerId){
      // Server Side AJAX
 
-     const forms = document.querySelectorAll('form');
+     const forms = document.querySelectorAll(formSelector);
 
      const message = {
          loading: "img/form/spinner.svg",
@@ -16,16 +19,16 @@ function forms(){
  
      // Creating function 
  
-     const postData = async (url, data) => {
-         const result = await fetch(url, {
-             method: "POST",
-             headers: {
-                 'Content-type': 'application/json'
-             },
-             body: data
-         });
-         return await result.json();
-     };
+    //  const postData = async (url, data) => {
+    //      const result = await fetch(url, {
+    //          method: "POST",
+    //          headers: {
+    //              'Content-type': 'application/json'
+    //          },
+    //          body: data
+    //      });
+    //      return await result.json();
+    //  };
  
      function bindpostData(form) {
          form.addEventListener('submit', (e) => {
@@ -67,7 +70,7 @@ function forms(){
          const modalDialog = document.querySelector('.modal__dialog');
          modalDialog.classList.add('hide');
  
-         openModal();
+         openModal('.modal', modalTimerId);
  
          const thanksModal = document.createElement('div');
          thanksModal.classList.add('modal__dialog');
@@ -82,11 +85,12 @@ function forms(){
              thanksModal.remove();
              modalDialog.classList.add('show');
              modalDialog.classList.remove('hide');
-             closeModal();
+             closeModal('.modal');
          }, 4000);
      }
  
  
 }
 
-module.exports = forms;
+// module.exports = forms;
+export default forms;

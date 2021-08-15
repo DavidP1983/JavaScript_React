@@ -1,3 +1,4 @@
+import {getData} from '../services/sevices';
 function cards() {
 
     // *****Using Class for Cards - Rest Operator****** //
@@ -48,15 +49,15 @@ function cards() {
     // Creating Function 
 
 
-    const getData = async (url) => {
-        const res = await fetch(url);
+    // const getData = async (url) => {
+    //     const res = await fetch(url);
 
-        if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-        }
+    //     if (!res.ok) {
+    //         throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+    //     }
 
-        return await res.json();
-    };
+    //     return await res.json();
+    // };
 
     getData(' http://localhost:3000/menu')
         .then(data => {
@@ -74,4 +75,5 @@ function cards() {
 
 }
 
-module.exports = cards;
+// module.exports = cards;
+export default cards;
