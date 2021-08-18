@@ -16,7 +16,7 @@ $(function () {
         $('.image:even').fadeToggle('slow');
     });
 
-    $('.list-item:eq(4)').on('click', function(){
+    $('.list-item:eq(3)').on('click', function(){
         $('.image:odd').animate({
             opacity: 'toggle',
             height: 'toggle'
