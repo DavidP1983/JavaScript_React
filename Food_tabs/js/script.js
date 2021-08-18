@@ -1,5 +1,8 @@
 "use strict";
 
+require('es6-promise').polyfill();
+import 'nodelist-foreach-polyfill';
+
     import tabs from './modules/tabs';
     import modal from './modules/modal';
     import timer from './modules/timer';
@@ -15,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //       modal = require('./modules/modal'),
     //       timer = require('./modules/timer'),
     //       cards = require('./modules/cards'),
-    //       calc = require('./modules/calc'),
+    //       calc = require('./modules/calc'),n
     //       forms = require('./modules/forms'),
     //       slider = require('./modules/slider');
     
