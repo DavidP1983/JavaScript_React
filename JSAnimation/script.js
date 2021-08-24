@@ -78,6 +78,7 @@ function showMsg(){
 let position = 0;
 
 function move(length, callback){
+    
 position+= 1;
 if(position <= length){
     box.style.left = position + 'px';
