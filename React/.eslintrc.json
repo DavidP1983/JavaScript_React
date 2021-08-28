@@ -20,6 +20,9 @@
         "babel"
     ],
     "rules": {
+        "object-curly-spacing": ["error", "never", { "objectsInObjects": false }],
+        // "object-curly-spacing": ["error", "always", { "arraysInObjects": false }],
+        "eqeqeq": ["error", "smart"],
         "indent":["error", 2],
         "arrow-spacing":"error",
         // "quotes":["error", "double"],
