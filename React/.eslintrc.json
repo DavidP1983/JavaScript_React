@@ -20,6 +20,9 @@
         "babel"
     ],
     "rules": {
+        "no-useless-constructor": "error",
+        "max-classes-per-file": "off", 
+        "one-var": ["error", "always"],
         "object-curly-spacing": ["error", "never", { "objectsInObjects": false }],
         // "object-curly-spacing": ["error", "always", { "arraysInObjects": false }],
         "eqeqeq": ["error", "smart"],
