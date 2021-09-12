@@ -1,14 +1,11 @@
 import React from 'react'
+import {Button} from 'reactstrap'
 
 const PostStatusFilter = () => {
     return(
         <div className="input-group-append">
-            <button className="btn btn-primary" type="button">
-                Все
-            </button>
-            <button className="btn btn-outline-secondary" type="button">
-                Понравилось
-            </button>
+            <Button color='primary' type='button'>Все</Button>
+            <Button outline color='secondary' type='button'>Понравилось</Button>
         </div>
     )
 }

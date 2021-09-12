@@ -1,6 +1,6 @@
 .app-list-item {
     font-size: 1.25rem;
-    background-color:#eaf5fc;
+    /* background-color:#eaf5fc; */
   }
   
   .app-list-item button {
@@ -10,6 +10,7 @@
     font-size: 17px;
     border: none;
     cursor: pointer;
+    background-color: white;
   }
 
   .app-list-item button:focus {
@@ -37,6 +38,7 @@
 }
 
 .app-list-item-label {
+    color:black;
     display: block;
     line-height: 35px;
     cursor: pointer;
