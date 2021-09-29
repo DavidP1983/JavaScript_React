@@ -24,11 +24,11 @@ const AppStyleHeader = styled(Header)`
 }
 `
 
-const AppHeader = () => {
+const AppHeader = ({liked, allPost}) => {
     return (
         <AppStyleHeader as='a' className="d-flex flex-wrap  justify-content-between align-items-end" colored>
             <h1>David Piruzashvili</h1>
-            <h2 className='lead'> 5 записей, из них понравилось 0</h2>
+            <h2 className='lead'> {allPost} записей, из них понравилось {liked}</h2>
         </AppStyleHeader>
     )
 }

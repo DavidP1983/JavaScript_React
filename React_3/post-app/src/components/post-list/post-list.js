@@ -5,7 +5,7 @@ import PostListItem from '../post-list-item';
 
 import './post-list.css';
 
-const PostList = ({posts}) => {
+const PostList = ({posts, OnDelete,onToggleImportant, onToggleLike}) => {
     // eslint-disable-next-line array-callback-return
     const elements = posts.map((item) => {
 
@@ -14,7 +14,10 @@ const PostList = ({posts}) => {
 
         return (
             <li key={id} className='list-group-item my-2'>
-            <PostListItem {...itemProps} />
+            <PostListItem {...itemProps} 
+            OnDelete={() => OnDelete(id)}
+            onToggleImportant={() => onToggleImportant(id)}
+            onToggleLike={() => onToggleLike(id)}/>
             </li>
         )
     }
