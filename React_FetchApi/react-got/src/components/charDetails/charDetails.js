@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './charDetails.css';
 import gotService from '../../servises/gotService';
-
+import Spinner from '../spinner';
+import ErrorMessage from '../errorMessage';
 
 import styled from 'styled-components';
 
@@ -22,7 +23,9 @@ export default class CharDetails extends Component {
 
     state = {
         
-        char: null
+        char: null,
+        loading: true,
+        error: false
         
     }
 
@@ -43,21 +46,44 @@ export default class CharDetails extends Component {
         if(!charId){
             return;
         }
+        this.setState({loading: true})
         this.gotService.getCharacter(charId)
         .then((char) =>{
-            this.setState({char})
-        });
+            this.setState({char, loading: false})
+            
+        })
+        .catch(() => this.onError())
         // this.foo.bar = 0; // это ошибка умишленная
     }
 
-    render() {
 
-        if(!this.state.char){
+    onError = () => {
+        this.setState({
+            char: null,
+            error: true,
+        });
+    }
+
+
+    render() {
+        const{loading, error,char} = this.state;
+
+        if(!char && error){
+            return <ErrorMessage/>
+        }else if(!char){
             return <span className="select-error">Please select a character</span>
         }
+        
+        
         const{name, gender, born, died, culture} = this.state.char;
 
+        if(loading){
+            return <Spinner/>
+        }
+
+
         return (
+
             <CharDetailsHeader className="char-details rounded">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">

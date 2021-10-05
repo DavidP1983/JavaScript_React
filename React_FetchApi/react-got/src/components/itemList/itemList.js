@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import gotService from '../../servises/gotService';
 import  Spinner from '../spinner';
+import ErrorMessage from '../errorMessage';
 
 const LiBlock = styled.ul`
 .list-group-item {
@@ -15,6 +16,7 @@ export default class ItemList extends Component {
 
     state = {
         charList: null,
+        error: false
         
     }
 
@@ -22,12 +24,28 @@ export default class ItemList extends Component {
         this.gotService.getAllCharacters()
         .then((charList) => {
             this.setState({
-                charList
-            })
-        });
+                charList,
+                error: false
+            });
+        })
+        .catch(() => this.onError());
         
     }
 
+    componentDidCatch(){
+        this.setState({
+            charList: null,
+            error: true
+        })
+    }
+
+    
+    onError = (status) => {
+        this.setState({
+            charList: null,
+            error: true
+        })
+    }
 
     renderItem(arr) {
         return arr.map((item,i) => {
@@ -47,8 +65,16 @@ export default class ItemList extends Component {
     }
 
     render() {
-        const {charList} = this.state
+        const {charList,error} = this.state
         console.log(charList);
+
+        if(error) {
+            return(
+            <div>
+            <ErrorMessage/>
+            </div>
+            )
+        }
 
         if(!charList){
             return <Spinner/>
