@@ -86,7 +86,8 @@ got.getCharacter(130)
    .then(res => console.log(res));
 
 got.getAllHouses()
-   .then(resHouse => resHouse.forEach(item => console.log('\n',item.name)));
+.then(res => console.log(res));
+//    .then(resHouse => resHouse.forEach(item => console.log('\n',item.name)));
 
 got.getHouses(130)
    .then(resHouse => console.log(resHouse));
@@ -94,8 +95,9 @@ got.getHouses(130)
    got.getAllBooks()
    .then(resBooks => console.log('\n',resBooks));
 
-got.getAllBooks()
-   .then(resBooks => resBooks.forEach(item => console.log('\n',item.name)));
+got.getAllBooks(130)
+.then(resBooks => console.log(resBooks));
+//    .then(resBooks => resBooks.forEach(item => console.log('\n',item.name)));
 
 
 
