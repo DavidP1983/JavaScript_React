@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 // import { Spinner } from 'reactstrap';
 import styled from 'styled-components';
-import gotService from '../../servises/gotService';
+// import gotService from '../../servises/gotService';
 import  Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
@@ -12,19 +12,21 @@ const LiBlock = styled.ul`
 `
 
 export default class ItemList extends Component {
-    gotService = new gotService();
+    // gotService = new gotService();
 
     state = {
-        charList: null,
+        itemList: null,
         error: false
         
     }
 
     componentDidMount(){
-        this.gotService.getAllCharacters()
-        .then((charList) => {
+        const{getData} = this.props
+        getData() //service
+        // this.gotService.getAllCharacters()
+        .then((itemList) => {
             this.setState({
-                charList,
+                itemList,
                 error: false
             });
         })
@@ -34,7 +36,7 @@ export default class ItemList extends Component {
 
     componentDidCatch(){
         this.setState({
-            charList: null,
+            itemList: null,
             error: true
         })
     }
@@ -42,7 +44,7 @@ export default class ItemList extends Component {
     
     onError = (status) => {
         this.setState({
-            charList: null,
+            itemList: null,
             error: true
         })
     }
@@ -52,21 +54,23 @@ export default class ItemList extends Component {
            const {url} = item;
         //    console.log(url);
            let id = url.slice(-2);
+           const label = this.props.renderItem(item); // render function
        
             return (
                 <li 
                     key={id}
                     className="list-group-item"
-                    onClick={() => this.props.onCharSelected(id)}>
-                    {item.name}
+                    onClick={() => this.props.onItemSelected(id)}>
+                    {/* {item.name} */}
+                    {label}
                 </li>
             )
         });
     }
 
     render() {
-        const {charList,error} = this.state
-        console.log(charList);
+        const {itemList,error} = this.state
+        console.log(itemList);
 
         if(error) {
             return(
@@ -76,15 +80,15 @@ export default class ItemList extends Component {
             )
         }
 
-        if(!charList){
+        if(!itemList){
             return <Spinner/>
         }
 
-        const items = this.renderItem(charList);
+        const items = this.renderItem(itemList);
 
 
         return (
-            <LiBlock className="item-list list-group">
+            <LiBlock className="item-list list-group my-2">
                 {items}
             </LiBlock>
         );
