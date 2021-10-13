@@ -96,8 +96,8 @@ got.getHouses(130)
    .then(resBooks => console.log('\n',resBooks));
 
 got.getAllBooks(130)
-.then(resBooks => console.log(resBooks));
-//    .then(resBooks => resBooks.forEach(item => console.log('\n',item.name)));
+// .then(resBooks => console.log(resBooks));
+   .then(resBooks => resBooks.forEach(item => console.log(item.url.replace( /^\D+/g, ''))));
 
 
 
