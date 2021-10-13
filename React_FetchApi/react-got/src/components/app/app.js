@@ -3,10 +3,11 @@ import { Col, Row, Container, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import ErrorMessage from '../errorMessage';
-import { CharacterPage, BookPage, HousesPage } from '../pages';
+import { CharacterPage, BookPage, HousesPage, BooksItem } from '../pages';
 import gotService from '../../servises/gotService';
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
-
+import './app.css';
 
 export default class App extends Component {
 
@@ -56,11 +57,12 @@ export default class App extends Component {
             classNames += ' toggle';
         }
 
-        const char = showrandomChar ? <RandomChar className={classNames} /> : null;
+        const char = showrandomChar ? <RandomChar className={classNames} interval={3000} /> : null;
         console.log(char);
 
         return (
-            <>
+            <Router>
+                <div className='app'>
                 <Container>
                     <Header />
                 </Container>
@@ -72,14 +74,28 @@ export default class App extends Component {
                         </Col>
                     </Row>
 
-                    <CharacterPage />
+                    <Route path='/characters' component={CharacterPage}/>
+                    {/* <Route path='/books' component={BookPage}/> */}
+                    <Route path='/houses' component={HousesPage}/>
+                    <Route path='/books' exact component={BookPage}/>
+                    {/* <Route path='/books/:id' component={}/> */}
+                    <Route path='/books/:id' render={
+                        ({match}) => {
+                           const {id} = match.params;
+                        return <BooksItem bookId={id}/>}
+                    }/>
+
+
+                    {/* <CharacterPage />
 
                     <BookPage />
 
-                    <HousesPage />
+                    <HousesPage /> */}
 
                 </Container>
-            </>
+            </div>
+            </Router>
+            
         );
     }
 };

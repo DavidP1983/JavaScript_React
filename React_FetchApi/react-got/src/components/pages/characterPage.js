@@ -5,6 +5,9 @@ import CharDetails,{Field} from '../charDetails';
 import ErrorMessage from '../errorMessage';
 import gotService from '../../servises/gotService';
 import RowBlock from '../rowBlock';
+import WithData from '../withData/withData';
+
+
 
 // const RowBlock = ({left, right}) => {
 //     return (
@@ -19,9 +22,13 @@ import RowBlock from '../rowBlock';
 //     )
 // }
 
+
 export default class CharacterPage extends Component{
 
-        gotService = new gotService();
+   gotService = new gotService();
+
+       
+
 
 
     state = {
@@ -48,12 +55,18 @@ export default class CharacterPage extends Component{
         if(error){
             return <ErrorMessage/>
         }
+        const {getAllCharacters} = new gotService();
+        const WithDataComponent = WithData(ItemList,getAllCharacters);
+      
 
         const itemList = (
-            <ItemList onItemSelected={this.onItemSelected}
-            getData={this.gotService.getAllCharacters} //service
+            <WithDataComponent onItemSelected={this.onItemSelected}
+            // getData={this.gotService.getAllCharacters} //service
             renderItem={({name, gender}) => `${name} (${gender})`}/> //render function
         )
+        
+        
+        
 
         const charDetails = (
             <CharDetails charId={this.state.selectedChar}
@@ -67,7 +80,11 @@ export default class CharacterPage extends Component{
 
         return (
             <RowBlock left={itemList} right={charDetails}/>
+            
         )
-     
+    
+    
     }
+   
 }
+

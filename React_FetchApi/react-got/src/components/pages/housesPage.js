@@ -4,7 +4,7 @@ import CharDetails,{Field} from '../charDetails';
 import ErrorMessage from '../errorMessage';
 import gotService from '../../servises/gotService';
 import RowBlock from '../rowBlock';
-
+import WithData from '../withData/withData';
 
 
 export default class HousesPage extends Component{
@@ -37,9 +37,13 @@ export default class HousesPage extends Component{
             return <ErrorMessage/>
         }
 
+        const {getAllHouses} = new gotService();
+        const WithDataComponent = WithData(ItemList,getAllHouses);
+
         const itemList = (
-            <ItemList onItemSelected={this.onItemSelected}
-            getData={this.gotService.getAllHouses} //service
+            <WithDataComponent 
+            onItemSelected={this.onItemSelected}
+            // getData={this.gotService.getAllHouses} //service
             renderItem={({name}) => (name)}/> //render function
         )
 
