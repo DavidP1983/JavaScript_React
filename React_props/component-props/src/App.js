@@ -49,7 +49,7 @@ class WhoAmI extends Component{
     const{name, surname, link,nameFun} = this.props;
     const{text} = this.state
 
-    // console.log(this);
+    console.log(this);
     
     return (
       <div>
