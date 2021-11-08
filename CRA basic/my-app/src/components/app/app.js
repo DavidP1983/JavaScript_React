@@ -16,9 +16,9 @@ class App extends Component {
         super(props);
     this.state =  {
         data: [
-        {name:'John C.', salary: 800, increase: true, id:1},
-        {name:'Alex M.', salary: 3000, increase: false, id:2},
-        {name:'Carl.W', salary: 5000, increase: false, id:3}
+        {name:'John C.', salary: 800, increase: false, like:false,  id:1},
+        {name:'Alex M.', salary: 3000, increase: false, like:false, id:2},
+        {name:'Carl.W', salary: 5000, increase: false, like:false, id:3}
     ]
     
     }
@@ -46,6 +46,7 @@ onAdd = (name,salary) => {
         name: name,
         salary: salary,
         increase:false,
+        rise: false,
         id: uuidv4().slice(2,9)
     };
     this.setState(({data}) => ({
@@ -53,11 +54,36 @@ onAdd = (name,salary) => {
     }))
 }
 
+onToggleProp = (id, prop) => {
+    this.setState(({data}) => ({
+        data: data.map(item => {
+            if(item.id === id){
+                return {...item, [prop]: !item[prop]}
+            }
+            return item;
+        })
+    }))
+}
+
+// onToggleRise = (id) => {
+//    this.setState(({data}) => ({
+//     data: data.map(item =>{
+//         if(item.id === id){
+//             return {...item, like:!item.like}
+//         }
+//         return item;
+//     })
+//    }))
+// }
+
     render() {
-        const{data} = this.state
+        const{data} = this.state;
+        const employees = this.state.data.length;
+        const increase = this.state.data.filter(item => item.increase).length;
+
         return (
         <div className='app'>
-            <AppInfo/>
+            <AppInfo employees={employees} increase={increase}/>
 
             {/* Поиск и фильтры */}
             <div className="search-panel"> 
@@ -66,7 +92,9 @@ onAdd = (name,salary) => {
             </div>
             <Employerslist 
             data={data}
-            onDeleted={this.deleteItem}/>
+            onDeleted={this.deleteItem}
+            onToggleProp={this.onToggleProp}
+            /*onToggleRise={this.onToggleRise}*//>
             <EmployersAddForm onAdd={this.onAdd}/>
         </div>
     )

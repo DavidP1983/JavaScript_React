@@ -20,7 +20,10 @@ class EmployersAddForm extends Component {
     onAdd = (e) => {
         e.preventDefault();
         const{name,salary} = this.state;
-        this.props.onAdd(name,salary);
+        if(name.length > 3 && name.match(/\D/g) && salary){
+            this.props.onAdd(name,salary);
+        }
+        
         this.setState({
             name: '',
             salary: ''
@@ -31,10 +34,18 @@ class EmployersAddForm extends Component {
     render() {
         const{name, salary} = this.state;
 
+        let className= "add-form form-inline";
+
+        // eslint-disable-next-line no-mixed-operators
+        if (name && name.length < 4 || name.match(/\d/g)){
+            className+= ' emptyField';
+        }
+
+    
        return (
         <div className="app-add-form">
             <h3 className='d-flex justify-content-center'>Добавте нового сотрудника</h3>
-            <form className='add-form form-inline'
+            <form className={className}
             onSubmit={this.onAdd}>
                 <input
                     type="text"

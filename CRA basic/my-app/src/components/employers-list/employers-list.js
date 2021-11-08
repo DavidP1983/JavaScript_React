@@ -1,13 +1,15 @@
 import EmployersListItem from "../employers-list-item/employers-list-item";
 import './employers-list.css';
 
-const Employerslist = ({data, onDeleted}) => {
+const Employerslist = ({data, onDeleted,onToggleProp,onToggleRise}) => {
 
     const elements = data.map((item) => {
         const{id, ...itemPromps} = item;
         return (
             <EmployersListItem key={id} {...itemPromps}
-            onDelete={() => onDeleted(id)}/>
+            onDelete={() => onDeleted(id)}
+            onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}
+            /*onToggleRise={() => onToggleRise(id)}*//>
         )
     })
 

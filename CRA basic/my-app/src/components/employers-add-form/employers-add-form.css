@@ -15,4 +15,10 @@
 .add-form input {
     width: 350px;
     margin-right: 10px;
+   /* border: none; */
 }
+
+.add-form.emptyField .new-post-label {
+    border: 1px solid red;
+}
+
