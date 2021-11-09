@@ -52,7 +52,7 @@ class WhoAmI extends Component{
     console.log(this);
     
     return (
-      <div>
+      <>
 
         {/* <button onClick={() => this.nextYear()}>{text}</button> */}
 
@@ -68,7 +68,7 @@ class WhoAmI extends Component{
             <span>Введите текст</span>
             <input type="text" onChange={(e) => this.commitInputChanges(e, 'some color')} />   
         </form>     
-     </div>
+     </>
     )
   }
 }
