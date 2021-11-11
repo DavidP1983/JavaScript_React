@@ -6,6 +6,7 @@ import SearchPanel from '../search-panel/search-panel';
 import AppFilter from '../app-filter/app-filter';
 import Employerslist from '../employers-list/employers-list';
 import EmployersAddForm from '../employers-add-form/employers-add-form';
+import ErrorMeassage from '../error-message/error-message';
 
 import './app.css';
 
@@ -19,7 +20,10 @@ class App extends Component {
         {name:'John C.', salary: 800, increase: false, like:false,  id:1},
         {name:'Alex M.', salary: 3000, increase: false, like:false, id:2},
         {name:'Carl.W', salary: 5000, increase: false, like:false, id:3}
-    ]
+    ],
+    term: '',
+    filter: 'all',
+    
     
     }
       
@@ -76,10 +80,81 @@ onToggleProp = (id, prop) => {
 //    }))
 // }
 
+searchEmp = (items, term) => {
+    if(term.length === 0){
+        return items;
+    }
+    return items.filter(item => {
+        return item.name.indexOf(term) > -1
+    })
+}
+
+onUpdateTerm = (term) => {
+    this.setState({term});
+}
+
+
+onUpdateFilter = (e) => {
+    const toggle = e.currentTarget.getAttribute('data-toggle');
+    this.setState({filter: toggle})
+}
+
+
+searchChanges = (items, filter) => {
+    if(filter === 'all') {
+        return items;
+    }if (filter === 'rise') {
+        return items.filter(item => {
+            return item.like 
+        })
+    }
+        return  items.filter(item => {
+            return item.salary > 1000 
+        })     
+}
+
+// method searchChanges and  onUpdateFilter another way 
+
+/*
+
+onUpdateFilter = (filter) => {
+    this.setState({filter})
+}
+
+
+searchChanges = (items, filter) => {
+    switch(filter) {
+        case 'rise':
+            return items.filter(item => item.like);
+        case 'more': 
+            return items.filter(item => item.salary > 1000);
+        default:
+            return items;
+    }
+}
+*/
+
+onSalaryChanges = (name, salary) => {
+    this.setState(({data}) => ({
+     data: data.map(item =>{
+        if(item.name === name){
+            return {...item, salary}
+        }
+        return item;
+    })
+    }))
+ }
+
+ 
+
     render() {
-        const{data} = this.state;
+        const{data, term,filter} = this.state;
         const employees = this.state.data.length;
         const increase = this.state.data.filter(item => item.increase).length;
+        const visibleData = this.searchChanges(this.searchEmp(data, term),filter);
+        const filterChanges = this.state.filter;
+
+        const errorMessage = visibleData.length === 0 ? <ErrorMeassage/>:null;
 
         return (
         <div className='app'>
@@ -87,13 +162,15 @@ onToggleProp = (id, prop) => {
 
             {/* Поиск и фильтры */}
             <div className="search-panel"> 
-                <SearchPanel/>
-                <AppFilter/>
+                <SearchPanel onUpdateTerm={this.onUpdateTerm}/>
+                <AppFilter onUpdateFilter={this.onUpdateFilter} filter={filterChanges}/>
             </div>
+            {errorMessage}
             <Employerslist 
-            data={data}
+            data={visibleData}
             onDeleted={this.deleteItem}
             onToggleProp={this.onToggleProp}
+            onSalaryChanges={this.onSalaryChanges}
             /*onToggleRise={this.onToggleRise}*//>
             <EmployersAddForm onAdd={this.onAdd}/>
         </div>

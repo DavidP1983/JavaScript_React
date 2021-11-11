@@ -1,0 +1,10 @@
+
+.error-message {
+    margin-top: 20px;
+    color: red;
+}
+
+.error-message h1 {
+    font-size:200%;
+    text-align: center;
+}
