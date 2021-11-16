@@ -1,0 +1,46 @@
+.card-decor {
+width: 220px;
+height: 250px;
+}
+
+.card-decor h3, p {
+font-family: Merienda;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 20px;
+color: #000000;
+}
+
+
+.card-decor h3 {
+    padding-top: 10px;
+}
+
+.card-decor .price {
+    font-weight: bolder;
+}
+
+.shadow {
+    filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.25));
+}
+
+.shadow .fa-star {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    margin-left: -120px;
+    margin-top: -40px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 16px;
+    color: #FFD700;
+    transition: 0.3s all;
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.shadow.like .fa-star, .shadow.like {
+    opacity: 1;
+    filter: drop-shadow(5px 5px 15px rgba(14, 14, 243, 0.801));
+}

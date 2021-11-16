@@ -1,0 +1,27 @@
+.search {
+    min-width: 100px;
+    height: 30px;
+    padding-left: 20px;
+    margin: 0 auto;
+}
+
+.search button {
+color: black;
+font-family: Merienda;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 17px;
+text-align: center;
+/* background: #FFFFFF; */
+box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.25);
+border-radius: 5px;
+border: none;
+}
+
+
+.search .text {
+    margin-right: 30px;
+    font-family: Merienda;
+    white-space: nowrap;
+}

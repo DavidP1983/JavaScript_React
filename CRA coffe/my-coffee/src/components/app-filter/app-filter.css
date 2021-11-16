@@ -1,0 +1,17 @@
+.search-panel {
+margin: 0 auto;
+margin-top: -450px;
+margin-bottom: 10px;
+overflow-x: hidden;
+}
+
+.filter-decor {
+    font-family: Merienda;
+    margin-left: 2px;
+    margin-right: -80px;
+}
+
+::placeholder {
+    font-family: Merienda;
+     text-align: center;
+  }
