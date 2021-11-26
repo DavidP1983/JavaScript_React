@@ -66,7 +66,7 @@ const buttons = buttonsData.map(({name, label}) => {
                 className={`btn ${clazz}`}
                 type='button' 
                 key={name}
-                onClick={() => onUpdateFilter(name)}>     
+                onClick={() => props.onUpdateFilter(name)}>     
                {label}    
         </button>            
     )
