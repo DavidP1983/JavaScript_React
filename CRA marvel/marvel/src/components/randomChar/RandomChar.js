@@ -11,7 +11,8 @@ import './randomChar.scss';
 class RandomChar extends Component {
     constructor(props) {
         super(props);
-        this.updateChar();
+
+     console.log('constructor');
     }
     state = {
         char:{},
@@ -20,12 +21,26 @@ class RandomChar extends Component {
     }
 
      marvelService = new MarvelServices();
-     
+
+
+    componentDidMount() {
+        this.updateChar();
+        // this.timer = setInterval(this.updateChar, 3000);
+        console.log('mount');
+    }
+
+        
+    componentWillUnmount() {
+        // clearInterval(this.timer);
+        console.log('unmount');
+    }
 
     onCharLoaded = (char) => {
+        console.log('update');
         this.setState({char, loading: false})
     }
 
+    
 
     onError = () => {
         this.setState({loading: false, error: true})
@@ -40,13 +55,20 @@ class RandomChar extends Component {
         
     }
 
+    onTry = () => {
+        this.updateChar();
+    }
+
 
     render() {
+
+        console.log('redner');
         const{char, loading, error} = this.state;
+        
 
        const errorMessage = error ? <ErrorMessage/> : null;
        const spinner =  loading ? <Spinner/> : null;
-       const content = !(loading || error) ? <View char={char}/> : null;
+       const content = !(loading || error) ? <View char={char} /> : null;
         
         return (
             <div className="randomchar">
@@ -66,7 +88,7 @@ class RandomChar extends Component {
                         Or choose another one
                     </p>
                     <button className="button button__main">
-                        <div className="inner">try it</div>
+                        <div className="inner" onClick={this.onTry}>try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
                 </div>
@@ -81,9 +103,18 @@ const View = ({char}) => {
 
     // const{name, description,thumbnail,homepage,wiki} = char; or this structure after dist...
 
+    const apiImgUpdate = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/";
+    const styleField = {
+                width: '180px',
+                height: '180px',
+                objectFit: 'contain'
+    
+            };
+    const clazz = char.thumbnail === `${apiImgUpdate}image_not_available.jpg` ? styleField : null;
+
     return (
         <div className="randomchar__block">
-        <img src={char.thumbnail} alt="Random character" className="randomchar__img" />
+        <img src={char.thumbnail} alt="Random character" style={clazz} className="randomchar__img" />
         <div className="randomchar__info">
             <p className="randomchar__name">{char.name}</p>
             <p className="randomchar__descr">
