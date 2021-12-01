@@ -56,6 +56,7 @@ class RandomChar extends Component {
     }
 
     onTry = () => {
+        this.setState({loading: true})
         this.updateChar();
     }
 

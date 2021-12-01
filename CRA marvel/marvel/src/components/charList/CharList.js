@@ -12,8 +12,8 @@ class CharList extends Component {
       
 
 
-        const elements = data.map((item, index) => {
-            const { thumbnail, name } = item;
+        const elements = data.map((item) => {
+            const { id,thumbnail, name } = item;
 
             const apiImgUpdate = "http://i.annihil.us/u/prod/marvel/i/mg/b/40/";
             const styleField = {
@@ -25,7 +25,7 @@ class CharList extends Component {
             const clazz = thumbnail === `${apiImgUpdate}image_not_available.jpg` ? styleField : null;
 
             return (
-                <li className="char__item" key={index}>
+                <li className="char__item" key={id} onClick={() => this.props.onCharSelected(id)}>
                     <img src={thumbnail} alt={name} style={clazz}/>
                     <div className="char__name">{name}</div>
                 </li>
