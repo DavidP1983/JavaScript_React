@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes  from 'prop-types';
 
 import MarvelServices from '../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
@@ -127,5 +128,13 @@ const View = ({char}) => {
         </>
     )
 }
+
+
+
+CharInfo.propTypes = {
+    charId: PropTypes.number
+}
+
+
 
 export default CharInfo;
