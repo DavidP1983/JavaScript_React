@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BootstrapTest from './bootstrapTest';
+// import BootstrapTest from './bootstrapTest';
 
 import './index.css';
 // import './index.scss';
@@ -22,7 +22,7 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
     <BigButton as="a">Новая конпака</BigButton>
-    <BootstrapTest/>
+    {/* <BootstrapTest/> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

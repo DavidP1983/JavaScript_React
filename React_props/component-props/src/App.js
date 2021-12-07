@@ -1,5 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import BootstrapTest from './bootstrapTest';
 import './App.css';
 // import './app.scss';
 
@@ -112,9 +113,56 @@ width: 600px;
 font-style: italic;
 `;
 
+// const DynamicGreating = (props) => {
+//     return (
+//       <div className={'mb-3 p-3 border border-' + props.color}>
+//         {props.children}
+//       </div>
+//     )
+// }
+
+const DynamicGreating = (props) => {
+    return (
+      <div className={'mb-3 p-3 border border-' + props.color}>
+        {
+           React.Children.map(props.children, child => {
+          return React.cloneElement(child, {className: 'shadow p-3 m-3 border rounded'})
+        })
+
+        }
+       
+      </div>
+    )
+}
+
 function App() {
   return (
     <Wrapper>
+
+    <DynamicGreating color={'primary'}>
+      <h2>My React</h2>
+      <h2>Hello world</h2>
+    </DynamicGreating>
+
+
+    <BootstrapTest
+    
+    left = {
+            <DynamicGreating color={'primary'}>
+              <h2>It's me</h2>
+              <h2>Hello </h2>
+            </DynamicGreating>
+    }
+
+    right = {
+            <DynamicGreating color={'primary'}>
+              <h2>Hey</h2>
+              <h2>Who are you</h2>
+            </DynamicGreating>
+    }
+    
+    />
+
         <WhoAmI name={{firstName: 'John'}} surname='Smith' link='facebook.com' nameFun={() => {return 'React'}}/>
         <WhoAmI name={{firstName: 'Alex'}} surname='Sheva' link='vk.com' nameFun={() => {return 'Node.js'}}/>
     </Wrapper>
