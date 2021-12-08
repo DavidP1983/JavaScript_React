@@ -15,7 +15,7 @@ import './App.css';
 //   )
 // }
 
-                                // Class Components
+// Class Components
 
 const EmpItem = styled.div`
 padding: 20px;
@@ -46,15 +46,15 @@ border: 1px solid rgba(0,0,0, .2);
 box-shadow: 5px 5px 10px rgba(0,0,0, .2);
 `;
 
-class WhoAmI extends Component{
+class WhoAmI extends Component {
   constructor(props) {
     super(props);
-      this.state = {
-        years: 27,
-        text: "Change Years",
-        position: ''
-      }
-      // this.nextYear = this.nextYear.bind(this);
+    this.state = {
+      years: 27,
+      text: "Change Years",
+      position: ''
+    }
+    // this.nextYear = this.nextYear.bind(this);
   }
 
   nextYear = () => {
@@ -77,12 +77,12 @@ class WhoAmI extends Component{
     })
   }
 
-  render(){
-    const{name, surname, link,nameFun} = this.props;
-    const{text} = this.state
+  render() {
+    const { name, surname, link, nameFun } = this.props;
+    const { text } = this.state
 
     console.log(this);
-    
+
     return (
       <EmpItem active>
 
@@ -90,18 +90,18 @@ class WhoAmI extends Component{
 
         <Button onClick={this.nextYear}>{text}</Button>
 
-         <Header>My name is {name.firstName}, surname - {surname}, 
-         age - {this.state.years}, 
-         position - {this.state.position}</Header>
+        <Header>My name is {name.firstName}, surname - {surname},
+          age - {this.state.years},
+          position - {this.state.position}</Header>
 
-         <a href={link}>My profile</a>
-         <h2 style={{fontSize: 30, color: 'red', transition:'all', WebkitTransition:'all', msTransition:'all'}}>My learning language is {nameFun()}</h2>
+        <a href={link}>My profile</a>
+        <h2 style={{ fontSize: 30, color: 'red', transition: 'all', WebkitTransition: 'all', msTransition: 'all' }}>My learning language is {nameFun()}</h2>
 
-         <form className="add-form">
-            <span>Введите текст</span>
-            <input type="text" onChange={(e) => this.commitInputChanges(e, 'some color')} />   
-        </form>     
-     </EmpItem>
+        <form className="add-form">
+          <span>Введите текст</span>
+          <input type="text" onChange={(e) => this.commitInputChanges(e, 'some color')} />
+        </form>
+      </EmpItem>
     )
   }
 }
@@ -113,6 +113,9 @@ width: 600px;
 font-style: italic;
 `;
 
+
+//props.children
+
 // const DynamicGreating = (props) => {
 //     return (
 //       <div className={'mb-3 p-3 border border-' + props.color}>
@@ -122,65 +125,106 @@ font-style: italic;
 // }
 
 const DynamicGreating = (props) => {
-    return (
-      <div className={'mb-3 p-3 border border-' + props.color}>
-        {
-           React.Children.map(props.children, child => {
-          return React.cloneElement(child, {className: 'shadow p-3 m-3 border rounded'})
+  return (
+    <div className={'mb-3 p-3 border border-' + props.color}>
+      {
+        React.Children.map(props.children, child => {
+          return React.cloneElement(child, { className: 'shadow p-3 m-3 border rounded' })
         })
 
-        }
-       
-      </div>
-    )
+      }
+
+    </div>
+  )
 }
 
+//inharitance & composition
 
 const HelloGreating = () => {
   return (
 
-      <div style={{'width': '600px', 'margin': '0 auto'}}>
-        <DynamicGreating color={'primary'}>
-             <h2>Hello React</h2>
-       </DynamicGreating>
-      </div>
+    <div style={{ 'width': '600px', 'margin': '0 auto' }}>
+      <DynamicGreating color={'primary'}>
+        <h2>Hello React</h2>
+      </DynamicGreating>
+    </div>
 
   )
 }
+
+// Render - Props
+
+const Message = (props) => {
+  return (
+    <h2>The counter is {props.counter}</h2>
+  )
+}
+
+
+class Counter extends Component {
+  state = {
+    counter: 0
+  }
+
+  changeCounter = () => {
+    this.setState(({counter}) => ({
+      counter: counter + 1
+    }))
+  }
+
+  render() {
+    return (
+      <>
+      <button 
+      className="btn btn-primary"
+      onClick={this.changeCounter}>
+          Click me
+      </button>
+      {this.props.render(this.state.counter)}
+      </>
+    )
+  }
+}
+
+
 
 
 function App() {
   return (
     <Wrapper>
-      
-      <HelloGreating/>
 
-    <DynamicGreating color={'primary'}>
-      <h2>My React</h2>
-      <h2>Hello world</h2>
-    </DynamicGreating>
+    <Counter render={counter => (
+      <Message counter={counter}/>
+    )}/>
+
+      <HelloGreating />
+
+      <DynamicGreating color={'primary'}>
+        <h2>My React</h2>
+        <h2>Hello world</h2>
+      </DynamicGreating>
 
 
-    <BootstrapTest
-    
-    left = {
-            <DynamicGreating color={'primary'}>
-              <h2>It's me</h2>
-              <h2>Hello </h2>
-            </DynamicGreating>
-    }
+      <BootstrapTest
 
-    right = {
-            <DynamicGreating color={'primary'}>
-              <h2>Hey</h2>
-              <h2>Who are you</h2>
-            </DynamicGreating>
-    }
-    
-    />
+        left={
+          <DynamicGreating color={'primary'}>
+            <h2>It's me</h2>
+            <h2>Hello </h2>
+          </DynamicGreating>
+        }
 
-        <WhoAmI name={{firstName: 'John'}} surname='Smith' link='facebook.com' nameFun={() => {return 'React'}}/>
-        <WhoAmI name={{firstName: 'Alex'}} surname='Sheva' link='vk.com' nameFun={() => {return 'Node.js'}}/>
+        right={
+          <DynamicGreating color={'primary'}>
+            <h2>Hey</h2>
+            <h2>Who are you</h2>
+          </DynamicGreating>
+        }
+
+      />
+
+      <WhoAmI name={{ firstName: 'John' }} surname='Smith' link='facebook.com' nameFun={() => { return 'React' }} />
+      <WhoAmI name={{ firstName: 'Alex' }} surname='Sheva' link='vk.com' nameFun={() => { return 'Node.js' }} />
     </Wrapper>
   );
 }
