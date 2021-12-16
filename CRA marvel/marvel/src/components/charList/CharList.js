@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React,{ Component } from 'react';
 // import { HideUntilLoaded } from 'react-animation';
 import PropTypes  from 'prop-types';
 
@@ -18,17 +18,21 @@ class CharList extends Component {
         error: false,
         newItemLoading: false,
         offset: 1548,
-        charEnded: false
+        charEnded: false,
+    
     }
 
     marvelService = new MarvelServices();
+
+   
 
     componentDidMount() {
         if(this.state.offset < 1559){
         this.updateChar();
         }
         window.addEventListener('scroll', this.handleScroll);
-
+       
+       
     }
 
  componentWillUnmount() {
@@ -90,22 +94,33 @@ handleScroll = () => {
         })
     }
 
+    myRefs = [];
+    mySecondref = [];
+    setRef = elem => {
+        this.myRefs.push(elem);
+        this.mySecondref.push(elem);
+    }
+
+    
+   
     // Этот метод создан для оптимизации, 
     // чтобы не помещать такую конструкцию в метод render
     renderItems(arr) {
-        const items = arr.map((item) => {
+        const items = arr.map((item,i) => {
             let imgStyle = { 'objectFit': 'cover' };
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
                 imgStyle = { 'objectFit': 'unset' };
             }
-           
+            
             return (
                 // <HideUntilLoaded  key={item.id} animationIn="bounceIn" durationOut={2000}>
-                <li 
+                <li tabIndex={0}
+                    ref={this.setRef}
                     className="char__item"
                     key={item.id}
-                    onClick={() => this.props.onCharSelected(item.id)}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+                    onClick={() => this.props.onCharSelected(item.id, this.myRefs[i], this.mySecondref)}
+                    onFocus={() => this.props.onCharSelected(item.id, this.myRefs[i], this.mySecondref)}>
+                    <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                     <div className="char__name">{item.name}</div>
                 </li>
                 // </HideUntilLoaded>
@@ -116,7 +131,7 @@ handleScroll = () => {
         // А эта конструкция вынесена для центровки спиннера/ошибки
         return (
            
-            <ul className="char__grid">
+            <ul  className="char__grid">
                     {items}
             </ul>
         )
@@ -142,7 +157,7 @@ handleScroll = () => {
         // }
 
         return (
-            <div className="char__list">
+            <div  className="char__list">
                 {errorMessage}
                 {spinner}
                 {content}

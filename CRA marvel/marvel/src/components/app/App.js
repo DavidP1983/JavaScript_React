@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React,{ Component } from "react";
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -16,17 +16,34 @@ class App extends Component {
 
     }
 
+ 
+    
+
     toggleRandomChar = () => {
         this.setState((state) => ({
             showRandomChar: !state.showRandomChar
         }))
     }
 
+    
 
-    onCharSelected = (id) => {
-        this.setState({ selectedChar: id })
+    onCharSelected = (id, ref, mySecondref) => {
+        this.setState({ selectedChar: id});
+        this.hideClass(mySecondref);
+        this.showClass(ref);
+        console.dir(ref);
     }
 
+
+
+   showClass = (ref) => {
+         ref.classList.add('selected');
+   }
+   
+   hideClass = (mySecondref) => {
+    mySecondref.map(item => item.classList.remove('selected'));
+   }
+ 
 
     render() {
 
