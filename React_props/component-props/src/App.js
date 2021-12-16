@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import BootstrapTest from './bootstrapTest';
+import {Container} from 'react-bootstrap';
 import './App.css';
 // import './app.scss';
 
@@ -143,7 +144,7 @@ const DynamicGreating = (props) => {
 const HelloGreating = () => {
   return (
 
-    <div style={{ 'width': '600px', 'margin': '0 auto' }}>
+    <div style={{ 'width': '500px', 'margin': '0 auto' }}>
       <DynamicGreating color={'primary'}>
         <h2>Hello React</h2>
       </DynamicGreating>
@@ -189,9 +190,88 @@ class Counter extends Component {
 
 
 
+// Ref
+
+class Form extends Component {
+  
+    //  myref = React.createRef();
+    //  mySecondref = React.createRef();
+
+
+    // componentDidMount() {
+    // // this.myref.current.focus();  
+    // // this.myref.current.doSmth();  
+    // // this.myref.focus();  
+    // }
+
+    // focusSecond = () => {
+    //   this.myref.current.focus();
+    // }
+
+
+    setInputRef = elem => {
+      this.myref = elem;
+      if(this.myref){
+        this.myref.focus();
+        console.log('true');
+      }
+      console.dir(this.myref);
+    }
+
+    //  focusSecond = () => {
+    //    if(this.myref) {
+    //     this.myref.focus();
+    //    }
+    
+    // }
+
+  render() {
+      return (
+          <Container>
+              <form className="w-50 border mt-5 p-3 m-auto">
+                  <div className="mb-3">
+                      <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
+                      <input /*ref={this.myref}*/  ref={this.setInputRef} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
+
+                        {/* <TextInput ref={this.myref}/> */}
+
+                  </div>
+                  <div className="mb-3">
+                      <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                      <textarea onClick={this.focusSecond} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+              </form>
+          </Container>
+      )
+  }
+}
+
+
+// class TextInput extends Component {
+
+//   doSmth = () => {
+//     console.log('Welcome');
+//   }
+
+//   render() {
+//     return (
+//       <input type="email" 
+//     className="form-control" 
+//     id="exampleFormControlInput1"
+//     placeholder="name@example.com"/>
+
+//     )
+
+//   }
+// }
+
+
+
 function App() {
   return (
     <Wrapper>
+
+    <Form/>
 
     <Counter render={counter => (
       <Message counter={counter}/>
