@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publishToHeroku": "cd ../ && git subtree push --prefix CRA marvel/marvel marvel126 <main> || true"
+    "publishToHeroku": "cd ../ && git subtree push --prefix CRA marvel marvel126 <main> || true"
    
   },
   "eslintConfig": {
