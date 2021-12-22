@@ -1,8 +1,0 @@
-.btn-group {
-    margin-top: 20px;
-}
-
-.btn-group .btn:focus, .btn:active{
-    outline: none !important;;
-    box-shadow:none !important;;
-}
