@@ -17,13 +17,11 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start-dev": "react-scripts start",
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "publishToHeroku": "cd ../ && git subtree push --prefix CRA marvel heroku-marvel125 <main> || true"
-   
   },
   "eslintConfig": {
     "extends": [
