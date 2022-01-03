@@ -1,4 +1,4 @@
-import {Component,useState, useEffect} from 'react';
+import {Component,useState, useEffect, useCallback} from 'react';
 import {Container} from 'react-bootstrap';
 import './App.css';
 
@@ -135,6 +135,8 @@ function toggleAutoplay() {
 // }
 
 
+
+
                                                                       //-----Hook useEffect-----//
 
 const Slider = (props) => {
@@ -146,16 +148,16 @@ const Slider = (props) => {
   const [autoplay, setAutoplay] = useState(false); 
   
   useEffect(() => {
-    console.log('effect');
+    // console.log('effect');
     document.title = `Slide: ${slide}`;
   }, []);
   
   function loggin() {
-    console.log('log');
+    // console.log('log');
   }
   
   useEffect(() => {
-    console.log('effect update');
+    // console.log('effect update');
     document.title = `Slide: ${slide}`;
     
     window.addEventListener('click', loggin);
@@ -168,7 +170,7 @@ const Slider = (props) => {
   
   
   useEffect(() => {
-    console.log('autoplay');
+    // console.log('autoplay');
   }, [autoplay]);
   
   // useEffect(() => {
@@ -186,13 +188,35 @@ const Slider = (props) => {
     setAutoplay(autoplay => !autoplay);
   }
   
+
+
+                                                       //Hook useCallback//
+
+const getSomeImages = useCallback (() => {
+  console.log('fetching');
+  return ['https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
+         'https://media.cntraveler.com/photos/60596b398f4452dac88c59f8/16:9/w_3999,h_2249,c_limit/MtFuji-GettyImages-959111140.jpg'];
+}, [slide]);
+
   
                                  
   
       return (
           <Container>
               <div className="slider w-50 m-auto">
-                  <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" />
+                  {/* <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" /> */}
+
+                  {/* {getSomeImages().map((url, i) => {
+                    return (
+                      <img key={i} className="d-block w-100" src={url} alt="slide" />
+
+                    )
+                  })
+                  
+                  } */}
+
+                  <Slide getSomeImages={getSomeImages}/>
+
                   <div className="text-center mt-5">Active slide {slide} <br/>  {autoplay ? 'auto' : null}</div>
                  
                   <div className="buttons mt-3">
@@ -208,11 +232,23 @@ const Slider = (props) => {
                   </div>
               </div>
           </Container>
-      )
+      ) 
   }
   
   
-  
+  const Slide = ({getSomeImages}) => {
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+      setImages(getSomeImages());
+    }, [getSomeImages])
+
+      return (
+        <>
+          {images.map((url, i) => <img key={i} className="d-block w-100" src={url} alt="slide" />)}
+        </>
+      )
+  }
 
 
 function App() {
