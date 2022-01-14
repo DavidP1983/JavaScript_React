@@ -159,7 +159,7 @@ const Slider = (props) => {
   }, []);
   
   function loggin() {
-    // console.log('log');
+    console.log('log');
   }
   
   useEffect(() => {
@@ -169,6 +169,7 @@ const Slider = (props) => {
     window.addEventListener('click', loggin);
   
     return () => {
+      console.log('umount');
       window.removeEventListener('click', loggin);
     }
   
@@ -282,7 +283,7 @@ useEffect(() => {
     const myRef = useRef(1);
 
     // const focusFirstTI = () => {
-    //     myRef.current.focus();
+    //     myRef. .focus();
     // }
 
     useEffect(() => {
