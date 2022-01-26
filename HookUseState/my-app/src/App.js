@@ -309,6 +309,76 @@ useEffect(() => {
 }
 
 
+
+
+
+
+                                                              //-----Our own Hooks-----//
+
+
+function useInputWithValidate(sameValue) {
+
+  const [value, setValue] = useState(sameValue);
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  }
+
+  const validateInput = () => {
+  return value.search(/\d/) >= 0
+      
+  }
+
+  return {value, onChange, validateInput}
+}
+
+
+
+const Form2 = () => {
+  // const [text, setText] = useState('');
+  // const [textArea, setTextArea] = useState('');
+
+  // const validateInput = (arg) => {
+  //   return arg.search(/\d/) >= 0
+      
+  // }
+
+  const input = useInputWithValidate('');
+  const textArea = useInputWithValidate('');
+
+  const color = input.validateInput() ? 'text-danger' : null; 
+
+  return (
+      <Container>
+          <form className="w-50 border mt-5 p-3 m-auto">
+              <div className="mb-3">
+                  <input value={`${input.value} / ${textArea.value}`} type="text" className="form-control" readOnly/>
+                  <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+                  <input onChange={input.onChange} 
+                  type="email" 
+                  value={input.value}
+                  className={`form-control ${color}`}
+                  id="exampleFormControlInput1" 
+                  placeholder="name@example.com"/>
+                  </div>
+                  <div className="mb-3">
+                  <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                  <textarea className="form-control" 
+                  id="exampleFormControlTextarea1" 
+                  rows="3"
+                  value={textArea.value}
+                  onChange={textArea.onChange}
+                  >
+                  </textarea>
+              </div>
+          </form>
+      </Container>
+  )
+}
+
+
+
+
 function App() {
   const [slider, setSlider] = useState(true);
 
@@ -317,6 +387,7 @@ function App() {
           <button onClick={() => setSlider(false)}>Click</button>
           {slider ? <Slider/> : null}
           <Form/>
+          <Form2/>
           </>
   );
 }
