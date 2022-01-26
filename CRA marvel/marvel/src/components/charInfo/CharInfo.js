@@ -70,7 +70,7 @@
 
 //         return (
 //         <div className="char__info">
-             
+
 //             {skeleton}
 //             {errorMessage}
 //             {spinner}
@@ -79,7 +79,7 @@
 //         </div>
 //     )
 //     }
-    
+
 // }
 
 // const View = ({char}) => {
@@ -123,7 +123,7 @@
 //                         )
 //                     })
 //                 }
-                
+
 //             </ul>
 //         </>
 //     )
@@ -141,13 +141,13 @@
 
 
 
- //-----Rewritering our App on Hooks-----//
+//-----Rewritering our App on Hooks-----//
 
 
 import { useState, useEffect } from 'react';
-import PropTypes  from 'prop-types';
+import PropTypes from 'prop-types';
 
-import MarvelServices from '../services/MarvelServices';
+import useMarvelServices from '../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
@@ -155,60 +155,46 @@ import Skeleton from '../skeleton/Skeleton';
 import './charinfo.scss';
 // import thor from '../../resources/img/thor.jpeg';
 
-const CharInfo = ({charId}) => {
+const CharInfo = ({ charId }) => {
 
 
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-   
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState(false);
 
-    const marvelService = new MarvelServices();
+
+    const { error, loading, getCharacter, clearError } = useMarvelServices();
 
     useEffect(() => {
         updateChar();
     }, [charId]);
-   
 
-   const  updateChar = () => {
-        if(!charId) {
+
+    const updateChar = () => {
+        if (!charId) {
             return;
         }
-
-        onCharLoading();
-
-        marvelService.getCharacter(charId)
-        .then(onCharLoaded)
-        .catch(onError)
-
+        clearError();
+        getCharacter(charId)
+            .then(onCharLoaded)
         // this.foo.bar = 0;
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
-        setLoading(false);
-    }
 
-    const onError = () => {
-        setError(true);
-        setLoading(false);
-    }
-
-    const onCharLoading = () => {
-        setLoading(true);
     }
 
 
 
-    
-        const skeleton = char || loading || error ? null : <Skeleton/>;
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error || !char) ? <View char={char}/> : null;
+    const skeleton = char || loading || error ? null : <Skeleton />;
+    const errorMessage = error ? <ErrorMessage /> : null;
+    const spinner = loading ? <Spinner /> : null;
+    const content = !(loading || error || !char) ? <View char={char} /> : null;
 
-        return (
+    return (
         <div className="char__info">
-             
+
             {skeleton}
             {errorMessage}
             {spinner}
@@ -216,21 +202,21 @@ const CharInfo = ({charId}) => {
 
         </div>
     )
-    }
-    
+}
 
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
 
-    let imgStyle = {'objectFit' : 'cover'}
-    if(thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
-        imgStyle = {'objectFit' : 'contain'}
+const View = ({ char }) => {
+    const { name, description, thumbnail, homepage, wiki, comics } = char;
+
+    let imgStyle = { 'objectFit': 'cover' }
+    if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
+        imgStyle = { 'objectFit': 'contain' }
     }
     return (
         <>
-        <div className="char__basics">
-                <img src={thumbnail} alt={name} style={imgStyle}/>
+            <div className="char__basics">
+                <img src={thumbnail} alt={name} style={imgStyle} />
                 <div>
                     <div className="char__info-name">{name}</div>
                     <div className="char__btns">
@@ -244,24 +230,24 @@ const View = ({char}) => {
                 </div>
             </div>
             <div className="char__descr">
-                    {description}            
-           </div>
+                {description}
+            </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
 
-              {comics.length > 0 ? null : <p><strong>Sorry comics not available</strong></p>}  
+                {comics.length > 0 ? null : <p><strong>Sorry comics not available</strong></p>}
 
                 {
-                    comics.map((item,i) => {
-                        if(i > 9) return;
+                    comics.map((item, i) => {
+                        if (i > 9) return;
                         return (
-                        <li className="char__comics-item" key={i}>
-                            {item.name}
-                        </li> 
+                            <li className="char__comics-item" key={i}>
+                                {item.name}
+                            </li>
                         )
                     })
                 }
-                
+
             </ul>
         </>
     )

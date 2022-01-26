@@ -195,7 +195,7 @@ import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelServices from '../services/MarvelServices';
+import useMarvelServices from '../services/MarvelServices';
 
 import './charlist.scss';
 
@@ -203,23 +203,21 @@ import './charlist.scss';
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    
     const [newItemLoading, setNewItemLoading] = useState(true);
     const [offset, setOffset] = useState(1548);
     const [charEnded, setCharEnded] = useState(false);
 
-    // console.log(offset);
-    // console.log(newItemLoading);
-    // console.log(charEnded);
+    const {error, getAllCharacters} =  useMarvelServices();
 
-    const marvelService = new MarvelServices();
+    
 
 
     useEffect(() => {
-        // console.log('updateChar');
+        console.log('effect');
         if(newItemLoading && !charEnded){
-            updateChar();
+            updateChar(true); 
+            // updateChar(offset, true); with click button
         }
     }, [newItemLoading]);
 
@@ -237,27 +235,25 @@ const CharList = (props) => {
   
 
     function handleScroll() {
-        // console.log('scroll');    
+        // console.log('scroll'); 
+       
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
         setNewItemLoading(true);
         }
+        
     };
 
 
-    const updateChar = () => {
-
-        onCharListLoading();
-
-        marvelService.getAllCharacters(offset)
+    const updateChar = () => { // passing argument on click true updateChar = (offset , initial) =>
+                              // initial ? setNewItemLoading(false) :  setNewItemLoading(true);
+       
+  
+        getAllCharacters(offset)
             .then(onCharListLoaded)
-            .catch(onError)
             .finally(() => setNewItemLoading(false))
     }
 
-    //loading new items button disable
-    const onCharListLoading = () => {
-        setNewItemLoading(true);
-    }
+    
 
     const onCharListLoaded = (newCharList) => {
         let ended = false;
@@ -265,18 +261,14 @@ const CharList = (props) => {
             ended = true;
         }
         setCharList(charList => [...charList, ...newCharList]);
-        setLoading(loading => false);
-        // setNewItemLoading(newItemLoading => false);
+       
         setOffset(offset => offset + 9);
         setCharEnded(charEnded => ended);
+        
     }
 
 
-    const onError = () => {
-        //We use without callback, because we don't mind wich state we have had before
-        setError(true);
-        setLoading(false);
-    }
+    
 
     const myRefs = useRef([]);
 
@@ -326,8 +318,8 @@ const CharList = (props) => {
     const items = renderItems(charList);
 
     const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error) ? items : null;
+    const spinner = newItemLoading && !charEnded ? <Spinner /> : null;
+    // const content = !(loading || error) ? items : null;
 
     // let name = charEnded ? 'There are no items to load' : 'load more';
     // const styleField = {
@@ -337,10 +329,11 @@ const CharList = (props) => {
     // }
 
     return (
+        
         <div className="char__list">
             {errorMessage}
             {spinner}
-            {content}
+            {items}
             {/* <button className="button button__main button__long"
                         disabled={newItemLoading}
                         style={{'display': charEnded ? 'none' : 'block'}}

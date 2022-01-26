@@ -1,0 +1,116 @@
+@import "../style/variables.scss";
+
+.comics {
+    &_header {
+        display: flex;
+        align-items: center;
+        padding:18px 25px 18px 45px;
+        border: 1px solid black;
+        background-color: $dark;
+        width: 1100px;
+        height: 100px;
+        position: relative;
+   
+        img {
+            width: 152px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 83px;
+         
+        }
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 75%; /* may have to change the top for a taller page */
+            bottom: 30px; /* may have to change the bottom for a taller page */
+            box-shadow: 0 12px 18px 12px rgba(14, 15, 15, .90); /* this is for the curled page corners */
+            z-index: -1;
+        }
+        /* left bottom corner shadow */
+        &::before {
+            left: 5px;
+            right: 50px;
+            transform: rotate(-3deg); /* may have to change the degrees rotated for a wider page */
+        }
+        /* right bottom corner shadow */
+        &::after {
+            left: 50px;
+            right: 5px;
+            transform: rotate(3deg); /* may have to change the degrees rotated for a wider page */
+        }
+    }
+    
+
+    &_title {
+        padding-right: 400px;
+        font-weight: bold;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 28.13px;
+        color: #ffffff;
+        margin: 0 auto;
+    }
+    &_img_logo {
+        margin-left: auto;
+        width: 133px;
+        height: 100px;
+        
+    }
+    &_list {
+        margin-top: 50px;
+        display: grid;
+        align-items: start;
+    }
+    &_grid {
+        display: grid;
+        grid-template-columns: repeat(4, 225px);
+        column-gap: 67px;
+        row-gap: 124px;
+    }
+    &_item {
+        width: 225px;
+        height: 346px;
+        padding: 15px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, .50);
+        cursor: pointer;
+        transition: 0.3s transform;
+
+        img {
+            width: 225px;
+            height: 346px;
+            transform: translate(-15px, -15px);
+        }
+        &.selected {
+            box-shadow: 0 5px 20px $main-color;
+            transform: translateY(-8px);
+        }
+    }
+    &_name {
+        width: 225px;
+        height: 36px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+        margin-left: -12px;
+    }
+    &_price {
+        width: 33px;
+        height: 18px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        color: rgba(92, 91, 91, 0.6); 
+        margin-left: -12px;
+    }
+    .button {
+        &__long {
+            display: block;
+            width: 170px;
+            margin: 118px auto 0 auto;
+        }
+    }
+}

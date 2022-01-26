@@ -89,6 +89,7 @@ import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
+import ComicsPage from "../../comicsPage/comicsInfo";
 
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
@@ -136,7 +137,7 @@ const[showRandomChar, setShow] = useState(true);
  
                  <main>
                      {/* <RandomChar /> */}
-                     {showRandomChar ? <RandomChar /> : null}
+                     {/* {showRandomChar ? <RandomChar /> : null}
                      <button onClick={toggleRandomChar}>Click me</button>
  
                      <div className="char__content">
@@ -149,9 +150,10 @@ const[showRandomChar, setShow] = useState(true);
  
                      </div>
  
-                     <img className="bg-decoration" src={decoration} alt="vision" />
- 
+                     <img className="bg-decoration" src={decoration} alt="vision" /> */}
+                     
                  </main>
+                     <ComicsPage/>
              </div>
  
          )

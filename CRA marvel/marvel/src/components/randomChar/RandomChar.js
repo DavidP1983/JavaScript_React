@@ -143,7 +143,7 @@
 
 
 import { useState, useEffect } from 'react';
-import MarvelServices from '../services/MarvelServices';
+import useMarvelServices from '../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -155,10 +155,9 @@ import './randomChar.scss';
 const RandomChar = (props) => {
 
     const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    
 
-    const marvelService = new MarvelServices();
+    const {loading, error, getCharacter, clearError} =  useMarvelServices();
 
 
     useEffect(() => {
@@ -181,31 +180,25 @@ const RandomChar = (props) => {
 
 
     const updateChar = () => {
+        clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        marvelService.getCharacter(id)
+            getCharacter(id)
             .then(onCharLoaded)
-            .catch(onError);
-
     }
 
     const onCharLoaded = (char) => {
         console.log('update');
         setChar(char);
-        setLoading(false);
+     
  
     }
 
 
 
-    const onError = () => {
-        setLoading(false);
-        setError(true);
-       
-    }
+  
 
     const onUpdateChar = () => {
-        setLoading(true);
-        updateChar();
+            updateChar();
     }
 
 
