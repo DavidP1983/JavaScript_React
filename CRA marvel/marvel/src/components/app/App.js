@@ -16,8 +16,8 @@
 
 //     }
 
- 
-    
+
+
 
 //     toggleRandomChar = () => {
 //         this.setState((state) => ({
@@ -25,7 +25,7 @@
 //         }))
 //     }
 
-    
+
 
 //     onCharSelected = (id, ref, mySecondref) => {
 //         this.setState({ selectedChar: id});
@@ -39,11 +39,11 @@
 //    showClass = (ref) => {
 //          ref.classList.add('selected');
 //    }
-   
+
 //    hideClass = (mySecondref) => {
 //     mySecondref.map(item => item.classList.remove('selected'));
 //    }
- 
+
 
 //     render() {
 
@@ -80,88 +80,46 @@
 
 // export default App;
 
-                                                    
 
 
 
-import { useState } from "react";
+
+
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import ComicsPage from "../../comicsPage/comicsInfo";
+import { MainPage, ComicPage } from '../pages'; 
 
-import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
-import decoration from '../../resources/img/vision.png';
-                               
-                                        
-const App  = () => {
+const App = () => {
 
-const [selectedChar, setChar] = useState(null);
-const[showRandomChar, setShow] = useState(true);
-
-    
-
-                                                     
- 
-     const toggleRandomChar = () => {
-        setShow(showRandomChar => !showRandomChar);
-     }
- 
-     
- 
-     const onCharSelected = (id, ref, mySecondref) => {
-        
-      setChar(id);
-      hideClass(mySecondref);
-      showClass(ref);
-
-     }
- 
- 
- 
-    const showClass = (ref) => {
-          ref.classList.add('selected');
-    }
-    
-    const hideClass = (mySecondref) => {
-     mySecondref.map(item => item.classList.remove('selected'));
-    }
-  
- 
- 
     return (
-             <div className="app">
-                 <AppHeader />
- 
-                 <main>
-                     {/* <RandomChar /> */}
-                     {/* {showRandomChar ? <RandomChar /> : null}
-                     <button onClick={toggleRandomChar}>Click me</button>
- 
-                     <div className="char__content">
- 
-                         <CharList onCharSelected={onCharSelected} />
- 
-                         <ErrorBoundary>
-                             <CharInfo charId={selectedChar} />
-                         </ErrorBoundary>
- 
-                     </div>
- 
-                     <img className="bg-decoration" src={decoration} alt="vision" /> */}
-                     
-                 </main>
-                     <ComicsPage/>
-             </div>
- 
-         )
- 
-     }
- 
- 
- 
- 
- export default App;
-                                                        
+        <Router>
+
+            <div className="app">
+                <AppHeader />
+
+                <main>
+                    {/* <RandomChar /> */}
+                    <Switch>
+                        
+                        <Route exact path="/">
+                           <MainPage/>
+                        </Route>
+                        <Route exact path="/comics">
+                         <ComicPage/>
+                        </Route>
+
+                    </Switch>
+
+                </main>
+            </div>
+
+        </Router>
+    )
+
+}
+
+
+
+
+export default App;

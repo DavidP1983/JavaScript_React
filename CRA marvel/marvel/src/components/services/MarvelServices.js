@@ -51,11 +51,6 @@ const  useMarvelServices = () =>  {
             homepage: char.urls[0].url,
             wiki: char.urls[1].url,
             comics: char.comics.items,
-            title: char.title,
-            comicsThumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
-            price: char.prices[0].price,
-
-
         }
     }
 

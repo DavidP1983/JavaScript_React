@@ -1,12 +1,12 @@
 import './comicsPage.scss';
-import Avengers_logo from '../resources/img/Avengers_logo.png';
-import Avengers from '../resources/img/Avengers.png';
+import Avengers_logo from '../../resources/img/Avengers_logo.png';
+import Avengers from '../../resources/img/Avengers.png';
 // import Xmen from '../resources/img/x-men.png';
 
 import { useState, useEffect, useRef } from 'react';
-import useMarvelServices from '../components/services/MarvelServices';
-import Spinner from '../components/spinner/Spinner';
-import ErrorMessage from '../components/errorMessage/ErrorMessage';
+import useMarvelServices from '../services/MarvelServices';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 
 const ComicsPage = () => {
