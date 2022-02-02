@@ -11,7 +11,7 @@ import decoration from '../../resources/img/vision.png';
 const MainPage = () => {
 
     const [selectedChar, setChar] = useState(null);
-    const [showRandomChar, setShow] = useState(false);
+    const [showRandomChar, setShow] = useState(true);
 
 
     // const [showPrompt, setShowPrompt] =  useState(true);  
