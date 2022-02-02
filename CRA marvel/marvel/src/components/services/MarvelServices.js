@@ -24,6 +24,11 @@ const  useMarvelServices = () =>  {
         return res.data.results.map(_transformComics);
     }
 
+    const getComics = async (id) => {
+        const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+        return _transformComics(res.data.results[0]);
+    }
+
    const  emptyData = (data) => {
         if (!data) {
             return <span style={{ color: 'red' }}>Description is not available</span>
@@ -60,10 +65,20 @@ const  useMarvelServices = () =>  {
             title: titleLength(char.title),
             comicsThumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             price: char.prices[0].price,
+            // price: char.prices.price ? `${char.prices.price}$` : 'not available'
+            description: emptyData(char.description),
+            // description: char.description || 'There is no description' -> так как там строки " "
+            pages: char.pageCount ? `${char.pageCount} p.` : 'No information about the number of pages',
+            language: char.textObjects.language || 'en-us',
+
+
         }
+        
     }
 
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics}
+   
+
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics}
 }
 
 

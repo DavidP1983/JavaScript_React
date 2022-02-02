@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Prompt } from 'react-router-dom';
 
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -10,10 +11,32 @@ import decoration from '../../resources/img/vision.png';
 const MainPage = () => {
 
     const [selectedChar, setChar] = useState(null);
-    const [showRandomChar, setShow] = useState(true);
+    const [showRandomChar, setShow] = useState(false);
 
 
+    // const [showPrompt, setShowPrompt] =  useState(true);  
 
+    //Prevent/let now  users refreshing or leaving the page
+    // useEffect(() => {
+    //     window.addEventListener('beforeunload', alertUser);
+        
+
+    //     return () => {
+    //         window.removeEventListener('beforeunload', alertUser);
+            
+    //     }
+    // }, []);
+
+    // const alertUser = (e) => {
+        
+    //     e.preventDefault();
+    //     e.returnValue  =  'The changes wont be saved if you press leave';
+    //       setShowPrompt(showPrompt => !showPrompt);
+     
+        
+    // }
+
+    
 
 
     const toggleRandomChar = () => {
@@ -40,20 +63,25 @@ const MainPage = () => {
         mySecondref.map(item => item.classList.remove('selected'));
     }
 
+    
 
     return (
-    <>
-         {showRandomChar ? <RandomChar /> : null}
-         <button onClick={toggleRandomChar}>Click me</button>
+        <>
+           <Prompt 
+           when={true} // showPrompt
+           message="Look at the comics at this page?"/>
 
-         <div className="char__content">
-             <CharList onCharSelected={onCharSelected} />
-             <ErrorBoundary>
-                 <CharInfo charId={selectedChar} />
-             </ErrorBoundary>
-         </div>
-         <img className="bg-decoration" src={decoration} alt="vision" />
-    </>
+            {showRandomChar ? <RandomChar /> : null}
+            <button onClick={toggleRandomChar}>Click me</button>
+
+            <div className="char__content">
+                <CharList onCharSelected={onCharSelected} />
+                <ErrorBoundary>
+                    <CharInfo charId={selectedChar} />
+                </ErrorBoundary>
+            </div>
+            <img className="bg-decoration" src={decoration} alt="vision" />
+        </>
     )
 }
 

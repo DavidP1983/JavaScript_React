@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import useMarvelServices from '../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import {Link} from 'react-router-dom';
 
 
 const ComicsPage = () => {
@@ -63,9 +64,14 @@ const ComicsPage = () => {
                ref={elem => myRef.current[i] = elem} 
                onClick={() => setRef(myRef.current[i], myRef.current)}
                onFocus={() => setRef(myRef.current[i], myRef.current)}>
-                   <img src={comicsThumbnail} alt={title} />
+                <Link to={`/comics/${comicsId}`}>
+                    <img src={comicsThumbnail} alt={title} />
                    <div className='comics_name'>{title}</div>
                    <div className='comics_price' style={style}>{noPprice}</div>
+                </Link>
+                   {/* <img src={comicsThumbnail} alt={title} />
+                   <div className='comics_name'>{title}</div>
+                   <div className='comics_price' style={style}>{noPprice}</div> */}
                </li>
             )
         });

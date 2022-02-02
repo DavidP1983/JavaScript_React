@@ -143,7 +143,7 @@
 
 //-----Rewritering our App on Hooks-----//
 
-
+import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -157,7 +157,7 @@ import './charinfo.scss';
 
 const CharInfo = ({ charId }) => {
 
-
+    
     const [char, setChar] = useState(null);
     // const [loading, setLoading] = useState(false);
     // const [error, setError] = useState(false);
@@ -239,12 +239,15 @@ const View = ({ char }) => {
 
                 {
                     comics.map((item, i) => {
+                        let comicsFromCharInfo = item.resourceURI.replace(/\D/g, '').slice(1);
                         if (i > 9) return;
                         return (
                             <li className="char__comics-item" key={i}>
+                        <Link to = {`/comics/${comicsFromCharInfo}`}>
                                 {item.name}
-                            </li>
-                        )
+                         </Link>
+                        </li>
+                       )
                     })
                 }
 
