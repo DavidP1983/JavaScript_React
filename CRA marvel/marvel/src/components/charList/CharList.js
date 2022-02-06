@@ -246,7 +246,6 @@ const CharList = (props) => {
 
     const updateChar = () => { // passing argument on click true updateChar = (offset , initial) =>
                               // initial ? setNewItemLoading(false) :  setNewItemLoading(true);
-       
   
         getAllCharacters(offset)
             .then(onCharListLoaded)
@@ -255,7 +254,7 @@ const CharList = (props) => {
 
     
 
-    const onCharListLoaded = (newCharList) => {
+    const onCharListLoaded =  (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
@@ -312,13 +311,14 @@ const CharList = (props) => {
 
 
 
-
-
-
     const items = renderItems(charList);
 
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = newItemLoading && !charEnded ? <Spinner /> : null;
+
+   
+
+
     // const content = !(loading || error) ? items : null;
 
     // let name = charEnded ? 'There are no items to load' : 'load more';
