@@ -1,5 +1,5 @@
-import {Component,useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import {Container} from 'react-bootstrap';
+import { Component, useState, useEffect, useCallback, useMemo, useRef, memo, PureComponent } from 'react';
+import { Container } from 'react-bootstrap';
 import './App.css';
 
 
@@ -58,7 +58,7 @@ import './App.css';
 //         )
 //     }
 // }
-                                                                      //-----Hook useState-----//
+//-----Hook useState-----//
 
 // const calcValue = () => {
 //   console.log('random');
@@ -137,7 +137,7 @@ function toggleAutoplay() {
 
 
 
-                                                                      //-----Hook useEffect-----//
+//-----Hook useEffect-----//
 
 const countTotal = (num) => {
   console.log("counting...");
@@ -147,84 +147,84 @@ const countTotal = (num) => {
 
 const Slider = (props) => {
 
-  
-  
+
+
   const [slide, setSlide] = useState(0);
-  
-  const [autoplay, setAutoplay] = useState(false); 
-  
+
+  const [autoplay, setAutoplay] = useState(false);
+
   useEffect(() => {
     // console.log('effect');
     document.title = `Slide: ${slide}`;
   }, []);
-  
+
   function loggin() {
     console.log('log');
   }
-  
+
   useEffect(() => {
     // console.log('effect update');
     document.title = `Slide: ${slide}`;
-    
+
     window.addEventListener('click', loggin);
-  
+
     return () => {
       console.log('umount');
       window.removeEventListener('click', loggin);
     }
-  
+
   }, [slide]);
-  
-  
+
+
   useEffect(() => {
     // console.log('autoplay');
   }, [autoplay]);
-  
+
   // useEffect(() => {
   //   console.log('slide');
   // }, [slide]);
-  
-  
-                             
-  
+
+
+
+
   function changeSlide(i) {
     setSlide(slide => slide + i)
   }
-  
+
   function toggleAutoplay() {
     setAutoplay(autoplay => !autoplay);
   }
-  
 
 
-                                                       //----Hook useCallback----//
 
-const getSomeImages = useCallback (() => {
-  console.log('fetching');
-  return ['https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
-         'https://media.cntraveler.com/photos/60596b398f4452dac88c59f8/16:9/w_3999,h_2249,c_limit/MtFuji-GettyImages-959111140.jpg'];
-}, [slide]);
+  //----Hook useCallback----//
 
-
-                                                        //----Hook useMemo----//
-
-const total = useMemo(() => {
-  return countTotal(slide);
-}, [slide]);
-
-const style = useMemo(() =>({color: slide > 4 ? 'red' : 'black'}), [slide]);
+  const getSomeImages = useCallback(() => {
+    console.log('fetching');
+    return ['https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg',
+      'https://media.cntraveler.com/photos/60596b398f4452dac88c59f8/16:9/w_3999,h_2249,c_limit/MtFuji-GettyImages-959111140.jpg'];
+  }, [slide]);
 
 
-useEffect(() => {
-  console.log('styles');
-},[style]);
+  //----Hook useMemo----//
 
-      return (
-          <Container>
-              <div className="slider w-50 m-auto">
-                  {/* <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" /> */}
+  const total = useMemo(() => {
+    return countTotal(slide);
+  }, [slide]);
 
-                  {/* {getSomeImages().map((url, i) => {
+  const style = useMemo(() => ({ color: slide > 4 ? 'red' : 'black' }), [slide]);
+
+
+  useEffect(() => {
+    console.log('styles');
+  }, [style]);
+
+  return (
+    <Container>
+      <div className="slider w-50 m-auto">
+        {/* <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" /> */}
+
+        {/* {getSomeImages().map((url, i) => {
                     return (
                       <img key={i} className="d-block w-100" src={url} alt="slide" />
 
@@ -233,79 +233,79 @@ useEffect(() => {
                   
                   } */}
 
-                  <Slide getSomeImages={getSomeImages}/>
+        <Slide getSomeImages={getSomeImages} />
 
-                  <div className="text-center mt-5">Active slide {slide} <br/>  {autoplay ? 'auto' : null}</div>
-                  <div style={style} className="text-center mt-5">Total slides: {total}</div>
+        <div className="text-center mt-5">Active slide {slide} <br />  {autoplay ? 'auto' : null}</div>
+        <div style={style} className="text-center mt-5">Total slides: {total}</div>
 
-                  <div className="buttons mt-3">
-                      <button 
-                          className="btn btn-primary me-2"
-                          onClick={() => changeSlide(-1)}>-1</button>
-                      <button 
-                          className="btn btn-primary me-2"
-                          onClick={() => changeSlide(1)}>+1</button>
-                      <button 
-                          className="btn btn-primary me-2"
-                          onClick={toggleAutoplay}>toggle autoplay</button>
-                  </div>
-              </div>
-          </Container>
-      ) 
-  }
-  
-  
-  const Slide = ({getSomeImages}) => {
-    const [images, setImages] = useState([]);
-
-    useEffect(() => {
-      setImages(getSomeImages());
-    }, [getSomeImages])
-
-      return (
-        <>
-          {images.map((url, i) => <img key={i} className="d-block w-100" src={url} alt="slide" />)}
-        </>
-      )
-  }
+        <div className="buttons mt-3">
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => changeSlide(-1)}>-1</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => changeSlide(1)}>+1</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={toggleAutoplay}>toggle autoplay</button>
+        </div>
+      </div>
+    </Container>
+  )
+}
 
 
+const Slide = ({ getSomeImages }) => {
+  const [images, setImages] = useState([]);
 
-                                                //-----Hook useRef-----//
+  useEffect(() => {
+    setImages(getSomeImages());
+  }, [getSomeImages])
+
+  return (
+    <>
+      {images.map((url, i) => <img key={i} className="d-block w-100" src={url} alt="slide" />)}
+    </>
+  )
+}
 
 
-  const Form = () => {
 
-    const [text, setText] = useState('');
+//-----Hook useRef-----//
 
-    // const myRef = useRef(null);
 
-    const myRef = useRef(1);
+const Form = () => {
 
-    // const focusFirstTI = () => {
-    //     myRef. .focus();
-    // }
+  const [text, setText] = useState('');
 
-    useEffect(() => {
-      // myRef.current++;
-      // console.log(myRef.current);
-      myRef.current = text;
-    })
+  // const myRef = useRef(null);
 
-    return (
-        <Container>
-            <form className="w-50 border mt-5 p-3 m-auto">
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
-                    <input /*ref={myRef}*/ onChange={(e) => setText(e.target.value)} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
-                    </div>
-                    <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
-                    <textarea  /*onClick={focusFirstTI} onClick={myRef.current++}*/  value={myRef.current} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div> 
-            </form>
-        </Container>
-    )
+  const myRef = useRef(1);
+
+  // const focusFirstTI = () => {
+  //     myRef. .focus();
+  // }
+
+  useEffect(() => {
+    // myRef.current++;
+    // console.log(myRef.current);
+    myRef.current = text;
+  })
+
+  return (
+    <Container>
+      <form className="w-50 border mt-5 p-3 m-auto">
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
+          <input /*ref={myRef}*/ onChange={(e) => setText(e.target.value)} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+          <textarea  /*onClick={focusFirstTI} onClick={myRef.current++}*/ value={myRef.current} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+      </form>
+    </Container>
+  )
 }
 
 
@@ -313,7 +313,7 @@ useEffect(() => {
 
 
 
-                                                              //-----Our own Hooks-----//
+//-----Our own Hooks-----//
 
 
 function useInputWithValidate(sameValue) {
@@ -325,11 +325,11 @@ function useInputWithValidate(sameValue) {
   }
 
   const validateInput = () => {
-  return value.search(/\d/) >= 0
-      
+    return value.search(/\d/) >= 0
+
   }
 
-  return {value, onChange, validateInput}
+  return { value, onChange, validateInput }
 }
 
 
@@ -340,55 +340,139 @@ const Form2 = () => {
 
   // const validateInput = (arg) => {
   //   return arg.search(/\d/) >= 0
-      
+
   // }
 
   const input = useInputWithValidate('');
   const textArea = useInputWithValidate('');
 
-  const color = input.validateInput() ? 'text-danger' : null; 
+  const color = input.validateInput() ? 'text-danger' : null;
 
   return (
-      <Container>
-          <form className="w-50 border mt-5 p-3 m-auto">
-              <div className="mb-3">
-                  <input value={`${input.value} / ${textArea.value}`} type="text" className="form-control" readOnly/>
-                  <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
-                  <input onChange={input.onChange} 
-                  type="email" 
-                  value={input.value}
-                  className={`form-control ${color}`}
-                  id="exampleFormControlInput1" 
-                  placeholder="name@example.com"/>
-                  </div>
-                  <div className="mb-3">
-                  <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
-                  <textarea className="form-control" 
-                  id="exampleFormControlTextarea1" 
-                  rows="3"
-                  value={textArea.value}
-                  onChange={textArea.onChange}
-                  >
-                  </textarea>
-              </div>
-          </form>
-      </Container>
+    <Container>
+      <form className="w-50 border mt-5 p-3 m-auto">
+        <div className="mb-3">
+          <input value={`${input.value} / ${textArea.value}`} type="text" className="form-control" readOnly />
+          <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+          <input onChange={input.onChange}
+            type="email"
+            value={input.value}
+            className={`form-control ${color}`}
+            id="exampleFormControlInput1"
+            placeholder="name@example.com" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+          <textarea className="form-control"
+            id="exampleFormControlTextarea1"
+            rows="3"
+            value={textArea.value}
+            onChange={textArea.onChange}
+          >
+          </textarea>
+        </div>
+      </form>
+    </Container>
   )
 }
 
 
+//--- React.memo ---//
+
+// function propsCompare(prevProps, nextProps) {
+//  return prevProps.mail.name === nextProps.mail.name && prevProps.text === nextProps.text
+// }
+
+const Form3 = memo((props) => {
+  console.log("redner");
+    return (
+        <Container>
+            <form className="w-50 border mt-5 p-3 m-auto">
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+                    <input value={props.mail} type="email" className='form-control' id="exampleFormControlInput1" placeholder="name@example.com"/>
+                    </div>
+                    <div className="mb-3">
+                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                    <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </form>
+        </Container>
+    )
+  },/* propsCompare*/);
+
+
+// --- React.PureComponent ---//
+
+// class Form4 extends Component {
+
+//   shouldComponentUpdate(nextProps) {
+//     if(this.props.mail.name === nextProps.mail.name) {
+//       return false
+//     } return true
+//   }
+
+//   render() {
+//     console.log('render');
+//   return (
+//     <Container>
+
+//       <form className="w-50 border mt-5 p-3 m-auto">
+//           <div className="mb-3">
+//               <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+//               <input value={this.props.mail.name} type="email" className='form-control' id="exampleFormControlInput1" placeholder="name@example.com"/>
+//               </div>
+//               <div className="mb-3">
+//               <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+//               <textarea value={this.props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+//           </div>
+//       </form>
+
+//  </Container>
+//   )
+  
+//   }
+// }
+
 
 
 function App() {
-  const [slider, setSlider] = useState(true);
+  const [slider, setSlider] = useState(true); // for useRef
+
+  const [data, setData] = useState({         //React.memo
+    mail: "name@example.com" ,
+    text: "some text"
+  });
+
+  const onLog = useCallback(() => {
+    console.log('wow');
+  }, []);
 
   return (
-          <>
-          <button onClick={() => setSlider(false)}>Click</button>
-          {slider ? <Slider/> : null}
-          <Form/>
-          <Form2/>
-          </>
+    <>
+      <button onClick={() => setSlider(false)}>Click</button> 
+      {slider ? <Slider /> : null}
+
+      <Form />
+      <Form2 />
+
+      <Form3 mail={data.mail} text={data.text}  /*onLog={() => console.log('wow')}*/ onLog={onLog}/>
+      <button onClick={() => setData({
+        mail: "name@example.com",
+        text: "some text"
+      })}>
+        Click me
+      </button>
+
+      {/* <Form4 mail={data.mail} text={data.text}/>
+      <button onClick={() => setData({
+        mail: {name: "name@example.com"},
+        text: "some text"
+      })}>
+        Click me
+      </button> */}
+
+    </>
   );
 }
 
