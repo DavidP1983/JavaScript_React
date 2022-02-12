@@ -1,4 +1,4 @@
-import { Component, useState, useEffect, useCallback, useMemo, useRef, memo, PureComponent } from 'react';
+import { Component, useState, useEffect, useCallback, useMemo, useRef, memo, PureComponent, createContext, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import './App.css';
 
@@ -436,17 +436,114 @@ const Form3 = memo((props) => {
 
 
 
+
+
+
+
+//--- Context and useContext ---//
+
+const dataContext = createContext({       
+  mail: "name@example.com" ,
+  text: "some text"
+});
+
+const {Provider, Consumer} = dataContext;
+
+const Form5 = (props) => {
+  console.log("redner");
+    return (
+        <Container>
+            <form className="w-50 border mt-5 p-3 m-auto">
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+                    <InputComponent/>
+                    </div>
+                    <div className="mb-3">
+                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                    <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </form>
+        </Container>
+    )
+  };
+
+// class InputComponent extends Component {
+//   render() {
+//     return (
+//       <Consumer>
+//         {
+//           value => {
+//             return (
+//               <input value={value.mail} 
+//               type="email" 
+//               className='form-control' 
+//               id="exampleFormControlInput1" 
+//               placeholder="name@example.com"/>
+
+//             )
+//           }
+//         }
+//       </Consumer>
+//     )
+//   }
+// }
+
+
+// class InputComponent extends Component {
+
+// static contextType = dataContext;
+
+//     render() {
+     
+//               return (
+//                 <input value={this.context.mail} 
+//                 type="email" 
+//                 className='form-control' 
+//                 id="exampleFormControlInput1" 
+//                 placeholder="name@example.com"/>
+  
+//               )
+            
+//           }
+//   }
+
+// InputComponent.contextType = dataContext;
+
+
+
+const InputComponent = () => {
+
+const context = useContext(dataContext);
+  return (
+    <input value={context.mail} 
+                type="email" 
+                className='form-control' 
+                id="exampleFormControlInput1" 
+                placeholder="name@example.com"
+                onFocus={context.forceChangeMail}/>
+  
+  )
+}
+
+
+
 function App() {
   const [slider, setSlider] = useState(true); // for useRef
 
   const [data, setData] = useState({         //React.memo
     mail: "name@example.com" ,
-    text: "some text"
+    text: "some text",
+    forceChangeMail: forceChangeMail
   });
 
   const onLog = useCallback(() => {
     console.log('wow');
   }, []);
+
+
+function forceChangeMail() {
+  setData({...data, mail: "text@gmail.com"});
+}
 
   return (
     <>
@@ -457,7 +554,7 @@ function App() {
       <Form2 />
 
       <Form3 mail={data.mail} text={data.text}  /*onLog={() => console.log('wow')}*/ onLog={onLog}/>
-      <button onClick={() => setData({
+      <button onClick={() => setData({ 
         mail: "name@example.com",
         text: "some text"
       })}>
@@ -472,6 +569,16 @@ function App() {
         Click me
       </button> */}
 
+      <Provider value={data}>
+
+         <Form5  text={data.text}/>
+      <button onClick={() => setData({...data,
+        mail: "second@example.com",
+        text: "another text"
+      })}>Click me</button>
+
+      </Provider>
+     
     </>
   );
 }
