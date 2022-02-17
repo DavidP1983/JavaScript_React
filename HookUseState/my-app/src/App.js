@@ -1,4 +1,4 @@
-import { Component, useState, useEffect, useCallback, useMemo, useRef, memo, PureComponent, createContext, useContext } from 'react';
+import { Component, useState, useEffect, useCallback, useMemo, useRef, memo, PureComponent, createContext, useContext, useReducer } from 'react';
 import { Container } from 'react-bootstrap';
 import './App.css';
 
@@ -385,21 +385,21 @@ const Form2 = () => {
 
 const Form3 = memo((props) => {
   console.log("redner");
-    return (
-        <Container>
-            <form className="w-50 border mt-5 p-3 m-auto">
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
-                    <input value={props.mail} type="email" className='form-control' id="exampleFormControlInput1" placeholder="name@example.com"/>
-                    </div>
-                    <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
-                    <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-            </form>
-        </Container>
-    )
-  },/* propsCompare*/);
+  return (
+    <Container>
+      <form className="w-50 border mt-5 p-3 m-auto">
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+          <input value={props.mail} type="email" className='form-control' id="exampleFormControlInput1" placeholder="name@example.com" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+          <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+      </form>
+    </Container>
+  )
+});
 
 
 // --- React.PureComponent ---//
@@ -430,7 +430,7 @@ const Form3 = memo((props) => {
 
 //  </Container>
 //   )
-  
+
 //   }
 // }
 
@@ -442,30 +442,30 @@ const Form3 = memo((props) => {
 
 //--- Context and useContext ---//
 
-const dataContext = createContext({       
-  mail: "name@example.com" ,
+const dataContext = createContext({
+  mail: "name@example.com",
   text: "some text"
 });
 
-const {Provider, Consumer} = dataContext;
+const { Provider, Consumer } = dataContext;
 
 const Form5 = (props) => {
   console.log("redner");
-    return (
-        <Container>
-            <form className="w-50 border mt-5 p-3 m-auto">
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
-                    <InputComponent/>
-                    </div>
-                    <div className="mb-3">
-                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
-                    <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-            </form>
-        </Container>
-    )
-  };
+  return (
+    <Container>
+      <form className="w-50 border mt-5 p-3 m-auto">
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlInput1" className="form-label mt-3">Email address</label>
+          <InputComponent />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+          <textarea value={props.text} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+      </form>
+    </Container>
+  )
+};
 
 // class InputComponent extends Component {
 //   render() {
@@ -494,16 +494,16 @@ const Form5 = (props) => {
 // static contextType = dataContext;
 
 //     render() {
-     
+
 //               return (
 //                 <input value={this.context.mail} 
 //                 type="email" 
 //                 className='form-control' 
 //                 id="exampleFormControlInput1" 
 //                 placeholder="name@example.com"/>
-  
+
 //               )
-            
+
 //           }
 //   }
 
@@ -513,17 +513,79 @@ const Form5 = (props) => {
 
 const InputComponent = () => {
 
-const context = useContext(dataContext);
+  const context = useContext(dataContext);
   return (
-    <input value={context.mail} 
-                type="email" 
-                className='form-control' 
-                id="exampleFormControlInput1" 
-                placeholder="name@example.com"
-                onFocus={context.forceChangeMail}/>
-  
+    <input value={context.mail}
+      type="email"
+      className='form-control'
+      id="exampleFormControlInput1"
+      placeholder="name@example.com"
+      onFocus={context.forceChangeMail} />
+
   )
 }
+
+
+
+// --- useReducer --- //
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'toggle':
+      return {autoplay: !state.autoplay}
+    case 'slow':
+      return {autoplay: 300}
+    case 'fast': 
+      return {autoplay: 700}
+    case 'customValue': 
+      return {autoplay: action.payLoad}
+    default: 
+      throw new Error();
+  }
+}
+
+const Slider1 = () => {
+  const [slide, setSlide] = useState(0);
+  // const [autoplay, setAutoplay] = useState(false);
+  const [autoplay, dispatch] = useReducer(reducer, {autoplay: false});
+
+
+  function changeSlide(i) {
+    setSlide(slide => slide + i);
+  }
+
+  return (
+    <Container>
+      <div className="slider w-50 m-auto">
+        <img className="d-block w-100" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt="slide" />
+        <div className="text-center mt-5">Active slide {slide} <br />{autoplay.autoplay ? 'auto' : null} </div>
+        <div className="buttons mt-3">
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => changeSlide(-1)}>-1</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => changeSlide(1)}>+1</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => dispatch({type: 'toggle'})}>toggle autoplay</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => dispatch({type: 'slow'})}>slow autoplay</button>
+          <button
+            className="btn btn-primary me-2"
+            onClick={() => dispatch({type: 'fast'})}>faste autoplay</button>
+            <button
+            className="btn btn-primary me-2"
+            onClick={(e) => dispatch({type: 'customValue', payLoad: +(e.target.textContent)})}>1000</button>
+        </div>
+      </div>
+    </Container>
+  )
+}
+
+
+
 
 
 
@@ -531,7 +593,7 @@ function App() {
   const [slider, setSlider] = useState(true); // for useRef
 
   const [data, setData] = useState({         //React.memo
-    mail: "name@example.com" ,
+    mail: "name@example.com",
     text: "some text",
     forceChangeMail: forceChangeMail
   });
@@ -541,20 +603,20 @@ function App() {
   }, []);
 
 
-function forceChangeMail() {
-  setData({...data, mail: "text@gmail.com"});
-}
+  function forceChangeMail() {
+    setData({ ...data, mail: "text@gmail.com" });
+  }
 
   return (
     <>
-      <button onClick={() => setSlider(false)}>Click</button> 
+      <button onClick={() => setSlider(false)}>Click</button>
       {slider ? <Slider /> : null}
 
       <Form />
       <Form2 />
 
-      <Form3 mail={data.mail} text={data.text}  /*onLog={() => console.log('wow')}*/ onLog={onLog}/>
-      <button onClick={() => setData({ 
+      <Form3 mail={data.mail} text={data.text}  /*onLog={() => console.log('wow')}*/ onLog={onLog} />
+      <button onClick={() => setData({
         mail: "name@example.com",
         text: "some text"
       })}>
@@ -571,14 +633,16 @@ function forceChangeMail() {
 
       <Provider value={data}>
 
-         <Form5  text={data.text}/>
-      <button onClick={() => setData({...data,
-        mail: "second@example.com",
-        text: "another text"
-      })}>Click me</button>
+        <Form5 text={data.text} />
+        <button onClick={() => setData({
+          ...data,
+          mail: "second@example.com",
+          text: "another text"
+        })}>Click me</button>
 
       </Provider>
-     
+
+      <Slider1/>
     </>
   );
 }
