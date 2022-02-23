@@ -145,6 +145,7 @@
 
 import {Link} from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import {easings} from 'react-animation';
 import PropTypes from 'prop-types';
 
 import useMarvelServices from '../services/MarvelServices';
@@ -209,12 +210,19 @@ const CharInfo = ({ charId }) => {
 const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki, comics } = char;
 
+    const style = {
+        animation: `fade-in ${easings.easeInQuart} 700ms `
+    }
+
+
     let imgStyle = { 'objectFit': 'cover' }
     if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
         imgStyle = { 'objectFit': 'contain' }
     }
     return (
-        <>
+       
+        <div  style={style}>
+
             <div className="char__basics">
                 <img src={thumbnail} alt={name} style={imgStyle} />
                 <div>
@@ -233,6 +241,7 @@ const View = ({ char }) => {
                 {description}
             </div>
             <div className="char__comics">Comics:</div>
+           
             <ul className="char__comics-list">
 
                 {comics.length > 0 ? null : <p><strong>Sorry comics not available</strong></p>}
@@ -252,7 +261,10 @@ const View = ({ char }) => {
                 }
 
             </ul>
-        </>
+          
+      
+          
+        </div>
     )
 }
 

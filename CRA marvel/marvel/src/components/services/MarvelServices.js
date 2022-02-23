@@ -32,8 +32,8 @@ const  useMarvelServices = () =>  {
    const  emptyData = (data) => {
         if (!data) {
             return <span style={{ color: 'red' }}>Description is not available</span>
-        } if (data.length > 228) {
-            return `${data.substr(0, 228)}...`;
+        } if (data.length > 220) {
+            return `${data.substr(0, 220)}...`;
         } else {
             return data;
         }
