@@ -87,12 +87,13 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AppHeader from "../appHeader/AppHeader";
-// import { MainPage, ComicPage, Page404, SingleComicPage } from '../pages';
+import { SingleCharPage } from '../pages';
 
 const Page404 = lazy(() => import('../pages/404'));
 const MainPage = lazy(() => import('../pages/MainPage'));
 const ComicPage = lazy(() => import('../pages/ComicPage'));
 const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
+// const SingleCharPage = lazy(() => import('../pages/SingleComicPage'));
 
 const App = () => {
 
@@ -112,8 +113,11 @@ const App = () => {
                             <Route exact path="/comics">
                                 <ComicPage />
                             </Route>
-                            <Route exact path="/comics/:comicId">
+                            <Route exact path="/comics/:Id">
                                 <SingleComicPage />
+                            </Route>
+                            <Route exact path="/characters/:Id" >
+                                <SingleCharPage />
                             </Route>
                             <Route path="*">
                                 <Page404 />

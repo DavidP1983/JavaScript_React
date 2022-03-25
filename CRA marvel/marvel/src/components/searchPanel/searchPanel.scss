@@ -1,0 +1,75 @@
+.form {
+
+    padding: 25px;
+    box-shadow: 10px 10px 20px 12px rgba(0, 0, 0, 0.25);
+    z-index: 5;
+    background-color: #fff;
+    width: 425px;
+    box-sizing: border-box;
+
+    label {
+        display: block;
+        font-size: 18px;
+        font-weight: bold;
+
+    }
+
+    input {
+        display: inline-block;
+        width: 250px;
+        height: 38px;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        // outline: 0px solid transparent;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transition: 0.5s;
+        text-indent: 20px;
+    }
+
+    input::placeholder {
+        font-family: Roboto Condensed;
+        font-style: normal;
+        font-weight: normal;
+        color: rgb(250, 39, 39);
+    }
+
+    input[type=text]:focus {
+        border: 3px solid rgb(0, 0, 255)
+    }
+
+
+    &__btns {
+        width: 101px;
+        height: 38px;
+        margin-left: 270px;
+        margin-top: -40px;
+
+        button:nth-child(2) {
+            width: 101px;
+            height: 38px;
+            margin-top: 10px;
+            display: none;
+        }
+    }
+
+    span {
+        color: #9F0013;
+        position: relative;
+        font-family: Roboto Condensed;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 21px;
+        padding-top: 20px;
+        display: inline-block;
+
+    }
+
+    .error {
+        color: #03710E;
+    }
+
+    .searchProsses {
+        opacity: 0.10;
+    }
+}

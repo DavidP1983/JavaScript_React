@@ -153,6 +153,7 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 
+
 import './charinfo.scss';
 // import thor from '../../resources/img/thor.jpeg';
 
@@ -261,9 +262,6 @@ const View = ({ char }) => {
                 }
 
             </ul>
-          
-      
-          
         </div>
     )
 }

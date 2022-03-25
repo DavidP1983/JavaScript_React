@@ -6,6 +6,7 @@ const  useMarvelServices = () =>  {
    const  _apiBase = "https://gateway.marvel.com:443/v1/public/";
    const  _apiKey = "apikey=4f42fd5e93d0afbb44a71fd347850eed";
    const  _baseOffset = 210;
+   const _name = 'Zarek';
 
     
 
@@ -26,7 +27,12 @@ const  useMarvelServices = () =>  {
 
     const getComics = async (id) => {
         const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
-        return _transformComics(res.data.results[0]);
+        return  _transformComics(res.data.results[0]);
+    }
+
+    const getCharacterName = async (offset = _name) => {
+        const res = await request(`${_apiBase}characters?name=${offset}&${_apiKey}`);
+        return res.data.results.map(_transformCharacter);
     }
 
    const  emptyData = (data) => {
@@ -78,7 +84,7 @@ const  useMarvelServices = () =>  {
 
    
 
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics}
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics, getCharacterName}
 }
 
 

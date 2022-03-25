@@ -1,4 +1,5 @@
 import './skeleton.scss';
+import SearchPanel from '../searchPanel/SearchPanel';
 
 const Skeleton = () => {
     return (
@@ -13,6 +14,7 @@ const Skeleton = () => {
                 <div className="pulse skeleton__block"></div>
                 <div className="pulse skeleton__block"></div>
             </div>
+            <SearchPanel/>
         </>
     )
 }
