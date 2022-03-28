@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Prompt } from 'react-router-dom';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -20,24 +21,24 @@ const MainPage = () => {
     //Prevent/let now  users refreshing or leaving the page
     // useEffect(() => {
     //     window.addEventListener('beforeunload', alertUser);
-        
+
 
     //     return () => {
     //         window.removeEventListener('beforeunload', alertUser);
-            
+
     //     }
     // }, []);
 
     // const alertUser = (e) => {
-        
+
     //     e.preventDefault();
     //     e.returnValue  =  'The changes wont be saved if you press leave';
     //       setShowPrompt(showPrompt => !showPrompt);
-     
-        
+
+
     // }
 
-    
+
 
 
     const toggleRandomChar = () => {
@@ -64,13 +65,24 @@ const MainPage = () => {
         mySecondref.map(item => item.classList.remove('selected'));
     }
 
-    
+
 
     return (
         <>
-           <Prompt 
-           when={true} // showPrompt
-           message="Look at the comics at this page?"/>
+            <HelmetProvider>
+                <Helmet>
+                    <meta
+                        name="description"
+                        content="Marvel information portal"
+                    />
+                    <title>Marvel information portal</title>
+                    <link rel="icon" type="image/png" href="https://kids.scholastic.com/content/kids64/en/books/_jcr_content/root/responsivegrid/responsivegrid_copy_/responsivegrid_1475068491/responsivegrid_41115/image_1985417245.coreimg.100.512.png/1625685144340/brand-icon-marvel.png" />
+                </Helmet>
+            </HelmetProvider>
+            <Prompt
+                when={true} // showPrompt
+                message="Look at the comics at this page?" />
+
 
             {showRandomChar ? <RandomChar /> : null}
             <button onClick={toggleRandomChar}>Click me</button>
@@ -80,10 +92,11 @@ const MainPage = () => {
                 <ErrorBoundary>
                     <CharInfo charId={selectedChar} />
                 </ErrorBoundary>
-               
+
             </div>
 
             <img className="bg-decoration" src={decoration} alt="vision" />
+
         </>
     )
 }
