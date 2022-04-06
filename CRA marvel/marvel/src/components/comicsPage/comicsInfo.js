@@ -10,6 +10,26 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import {Link} from 'react-router-dom';
 
 
+
+const setContent = (process, Component, newItemLoading) => {
+    switch(process) {
+        case 'waiting':
+            return <Spinner/>;
+            break;
+        case 'loading':
+            return newItemLoading  ? <Component/> : <Spinner/>;
+            break;
+        case 'confirmed':
+            return <Component/>;
+            break;
+        case 'error': 
+            return <ErrorMessage/>;
+        default:
+            throw new Error('Unexpected process state');
+    }
+}
+
+
 const ComicsPage = () => {
 
     const [comicsChar, setComicsChar] = useState([]);
@@ -18,16 +38,19 @@ const ComicsPage = () => {
     const [offset, setOffset] = useState(210);
 
 
-    const { loading, error, getAllComics } = useMarvelServices();
+    const { error, getAllComics,  process, setProcess } = useMarvelServices();
 
     useEffect(() => {
-        updateComics();
+        updateComics(offset, true);
     }, []);
 
-    const updateComics = (offset) => {
-        setNewItemLoading(true);
-        // initial ? setNewItemLoading(false) : setNewItemLoading(true);
-        getAllComics(offset).then(onComicsLoaded).finally(() => setNewItemLoading(false));
+    const updateComics = (offset, initial) => {
+        // setNewItemLoading(true);
+        initial ? setNewItemLoading(false) : setNewItemLoading(true);
+        getAllComics(offset)
+        .then(onComicsLoaded)
+        .then(() => setProcess('confirmed'))
+        .finally(() => setNewItemLoading(false));
     } 
 
     const onComicsLoaded = (newComicsChar) => {
@@ -84,9 +107,9 @@ const ComicsPage = () => {
     }
 
     
-    const comicsList = renderComicsList(comicsChar);
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = newItemLoading && !charEnded  ? <Spinner/> : null;
+    // const comicsList = renderComicsList(comicsChar);
+    // const errorMessage = error ? <ErrorMessage/> : null;
+    // const spinner = newItemLoading && !charEnded  ? <Spinner/> : null;
 
     return (
         <div className='comics'>
@@ -101,9 +124,12 @@ const ComicsPage = () => {
                 </div>
             </div>
             <div className='comics_list'>
-                {spinner}
+                {/* {spinner}
                 {errorMessage}
-                {comicsList}
+                {comicsList} */}
+
+                {setContent(process, () => renderComicsList(comicsChar), newItemLoading)}
+
                 {/* <ul className='comics_grid'>
                     <li className='comics_item'>
                         <img src={Xmen} alt="Xmen" />

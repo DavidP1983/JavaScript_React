@@ -14,7 +14,7 @@ const SearchPanel = () => {
     const [charId, setCharId] = useState(null);
     const [active, setActive] = useState(false);
     const [disable, setDisable] = useState(false);
-    const offset = 1549;
+    const offset = 1540;
 
    
     const { getAllCharacters } = useMarvelServices();

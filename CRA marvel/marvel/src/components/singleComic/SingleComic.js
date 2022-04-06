@@ -3,8 +3,9 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+// import Spinner from '../spinner/Spinner';
+// import ErrorMessage from '../errorMessage/ErrorMessage';
+import setContent from '../../utils/setContent';
 
 
 import Avengers_logo from '../../resources/img/Avengers_logo.png';
@@ -15,7 +16,7 @@ import './singleComic.scss';
 
 const withSingleComicPage = (BaseComponent, getData) => props => {
     const { Id } = useParams(); //getting id from this method 
-    let history = useHistory();   //Goback to the current page
+    // let history = useHistory();   //Goback to the current page
 
     const [comicChar, setComicChar] = useState(null);
 
@@ -28,33 +29,35 @@ const withSingleComicPage = (BaseComponent, getData) => props => {
     const updateComics = () => {
 
         props.clearError();
-        getData(Id).then(onComicsLoaded);
+        getData(Id).then(onComicsLoaded)
+            .then(() => props.setProcess('confirmed'))
     }
 
     const onComicsLoaded = (comic) => {
         setComicChar(comic);
     }
 
-    const errorMessage = props.error ? <ErrorMessage /> : null;
-    const spinner = props.loading ? <Spinner /> : null;
-    const content = !(props.loading || props.error || !comicChar) ? <View char={comicChar} history={history} /> : null;
-    const contentChar = !(props.loading || props.error || !comicChar) ? <ViewChar char={comicChar} history={history} /> : null;
+    // const errorMessage = props.error ? <ErrorMessage /> : null;
+    // const spinner = props.loading ? <Spinner /> : null;
+    // const content = !(props.loading || props.error || !comicChar) ? <View char={comicChar} history={history} /> : null;
+    // const contentChar = !(props.loading || props.error || !comicChar) ? <ViewChar char={comicChar} history={history} /> : null;
+    const content = setContent(props.process, View, comicChar)
+    const contentChar = setContent(props.process, ViewChar, comicChar)
 
 
     return <BaseComponent
         {...props}
-        errorMessage={errorMessage}
-        spinner={spinner}
+        // errorMessage={errorMessage}
+        // spinner={spinner}
         content={content}
         contentChar={contentChar}
-
     />
 
 }
 
 
 
-const SingleComic = ({ errorMessage, spinner, content }) => {
+const SingleComic = ({ content }) => {
     // const {comicId} = useParams(); //getting id from this method 
     // let history = useHistory();   //Goback to the current page
 
@@ -89,15 +92,16 @@ const SingleComic = ({ errorMessage, spinner, content }) => {
     return (
         // Для центрирования ошибки
         <>
-            {errorMessage}
-            {spinner}
+            {/* {errorMessage}
+            {spinner} */}
             {content}
         </>
     )
 }
 
-const View = ({ char, history }) => {
-    const { comicsThumbnail, title, description, pages, language, price } = char;
+const View = ({ data }) => {
+    let history = useHistory();
+    const { comicsThumbnail, title, description, pages, language, price } = data;
     const noPprice = price === 0 ? 'price not available' : `${price} $`;
     return (
         <>
@@ -139,20 +143,20 @@ const View = ({ char, history }) => {
     )
 }
 
-const SingleChar = ({ errorMessage, spinner, contentChar }) => {
+const SingleChar = ({ contentChar }) => {
 
     return (
-        // Для центрирования ошибки
         <>
-            {errorMessage}
-            {spinner}
+            {/* {errorMessage}
+            {spinner} */}
             {contentChar}
         </>
     )
 }
 
-const ViewChar = ({ char, history }) => {
-    const { thumbnail, name, description } = char;
+const ViewChar = ({ data }) => {
+    let history = useHistory();
+    const { thumbnail, name, description } = data;
 
     return (
         <>
@@ -194,7 +198,6 @@ const ViewChar = ({ char, history }) => {
 
 
 
-// const SingleComicwithData = withSingleComicPage(SingleComic);
 
 // export default SingleComicwithData;
 export default SingleComic;

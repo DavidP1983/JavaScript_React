@@ -1,17 +1,17 @@
 import { useHttp } from "../../Hooks/http.hook";
 
-const  useMarvelServices = () =>  {
-   const {loading, error, request, clearError} = useHttp();
+const useMarvelServices = () => {
+    const { /*loading, error,*/ request, clearError, process, setProcess } = useHttp();
 
-   const  _apiBase = "https://gateway.marvel.com:443/v1/public/";
-   const  _apiKey = "apikey=4f42fd5e93d0afbb44a71fd347850eed";
-   const  _baseOffset = 210;
-   const _name = 'Zarek';
-
-    
+    const _apiBase = "https://gateway.marvel.com:443/v1/public/";
+    const _apiKey = "apikey=4f42fd5e93d0afbb44a71fd347850eed";
+    const _baseOffset = 210;
+    const _name = 'Zarek';
 
 
-   const getAllCharacters = async (offset = _baseOffset) => {
+
+
+    const getAllCharacters = async (offset = _baseOffset) => {
         const res = await request(`${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`);
         return res.data.results.map(_transformCharacter);
 
@@ -27,7 +27,7 @@ const  useMarvelServices = () =>  {
 
     const getComics = async (id) => {
         const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
-        return  _transformComics(res.data.results[0]);
+        return _transformComics(res.data.results[0]);
     }
 
     const getCharacterName = async (offset = _name) => {
@@ -35,7 +35,7 @@ const  useMarvelServices = () =>  {
         return res.data.results.map(_transformCharacter);
     }
 
-   const  emptyData = (data) => {
+    const emptyData = (data) => {
         if (!data) {
             return <span style={{ color: 'red' }}>Description is not available</span>
         } if (data.length > 220) {
@@ -45,15 +45,15 @@ const  useMarvelServices = () =>  {
         }
     }
 
-   const titleLength = (data) => {
-       if(data.length > 53) {
-           return `${data.substr(0, 53)}...`;
-       }else {
-           return data;
-       }
-   }
+    const titleLength = (data) => {
+        if (data.length > 53) {
+            return `${data.substr(0, 53)}...`;
+        } else {
+            return data;
+        }
+    }
 
-   const  _transformCharacter = (char) => {
+    const _transformCharacter = (char) => {
         return {
             id: char.id,
             name: char.name,
@@ -79,12 +79,23 @@ const  useMarvelServices = () =>  {
 
 
         }
-        
+
     }
 
-   
 
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComics, getCharacterName}
+
+    return {
+        /*loading,
+        error,*/
+        process,
+        setProcess,
+        getAllCharacters,
+        getCharacter,
+        clearError,
+        getAllComics,
+        getComics,
+        getCharacterName
+    }
 }
 
 

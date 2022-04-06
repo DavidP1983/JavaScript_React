@@ -197,8 +197,29 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelServices from '../services/MarvelServices';
 
+
 import './charlist.scss';
 import 'react-animation/dist/keyframes.css';
+
+
+const setContent = (process, newItemLoading, charEnded) => {
+    switch (process) {
+        case 'waiting':
+            return <Spinner />;
+            break;
+        case 'loading':
+            return newItemLoading && !charEnded ? <Spinner /> : null ;
+            break;
+        case 'confirmed':
+            return null;
+            break;
+        case 'error':
+            return <ErrorMessage />;
+        default:
+            throw new Error('Unexpected process state');
+    }
+}
+
 
 
 const CharList = (props) => {
@@ -206,10 +227,10 @@ const CharList = (props) => {
     const [charList, setCharList] = useState([]);
 
     const [newItemLoading, setNewItemLoading] = useState(true);
-    const [offset, setOffset] = useState(1549);
+    const [offset, setOffset] = useState(1540);
     const [charEnded, setCharEnded] = useState(false);
 
-    const { error, getAllCharacters } = useMarvelServices();
+    const { error, getAllCharacters, process, setProcess } = useMarvelServices();
 
 
 
@@ -217,14 +238,13 @@ const CharList = (props) => {
     useEffect(() => {
         console.log('effect');
         if (newItemLoading && !charEnded) {
-            updateChar(true);
+            updateChar(offset);
             // updateChar(offset, true); with click button
         }
     }, [newItemLoading]);
 
 
     useEffect(() => {
-        // console.log('Onupdate');
         window.addEventListener('scroll', handleScroll);
         return () => {
             console.log('unmount');
@@ -236,7 +256,6 @@ const CharList = (props) => {
 
 
     function handleScroll() {
-        // console.log('scroll'); 
 
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
             setNewItemLoading(true);
@@ -245,11 +264,12 @@ const CharList = (props) => {
     };
 
 
-    const updateChar = () => { // passing argument on click true updateChar = (offset , initial) =>
+    const updateChar = (offset) => { // passing argument on click true updateChar = (offset , initial) =>
         // initial ? setNewItemLoading(false) :  setNewItemLoading(true);
 
         getAllCharacters(offset)
             .then(onCharListLoaded)
+            .then(() => setProcess('confirmed'))
             .finally(() => setNewItemLoading(false))
     }
 
@@ -286,22 +306,22 @@ const CharList = (props) => {
 
             return (
 
-                
-         <li tabIndex = {0}
-         style={style}
-            //instead of callback function setRef we will do all the stuff inside this map
-            ref = { elem => myRefs.current[i] = elem}
-            className = "char__item"
-            key = { item.id }
-            onClick = {() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}
-            onFocus = {() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}>
-                <img src={item.thumbnail} alt={item.name} style={imgStyle} />
-                <div className="char__name">{item.name}</div>
-        </li>
-            
-                        
-                        )
-                    });
+
+                <li tabIndex={0}
+                    style={style}
+                    //instead of callback function setRef we will do all the stuff inside this map
+                    ref={elem => myRefs.current[i] = elem}
+                    className="char__item"
+                    key={item.id}
+                    onClick={() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}
+                    onFocus={() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}>
+                    <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+                    <div className="char__name">{item.name}</div>
+                </li>
+
+
+            )
+        });
 
         // А эта конструкция вынесена для центровки спиннера/ошибки
         return (
@@ -310,19 +330,17 @@ const CharList = (props) => {
                 {items}
             </ul>
         )
-    
+
 
     }
 
 
     const items = renderItems(charList);
 
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = newItemLoading && !charEnded ? <Spinner /> : null;
+    // const errorMessage = error ? <ErrorMessage /> : null;
+    // const spinner = newItemLoading && !charEnded ? <Spinner /> : null;
 
-
-
-
+    // Уже не актуально, чтоб не прыгал компонент при  подгрузки данных
     // const content = !(loading || error) ? items : null;
 
     // let name = charEnded ? 'There are no items to load' : 'load more';
@@ -332,11 +350,14 @@ const CharList = (props) => {
     //     'filter': 'grayscale(.5)'
     // }
 
+
     return (
 
         <div className="char__list">
-            {errorMessage}
-            {spinner}
+            {/* {errorMessage}
+            {spinner} 
+             */}
+            {setContent(process, newItemLoading, charEnded)}
             {items}
             {/* <button className="button button__main button__long"
                             disabled={newItemLoading}
