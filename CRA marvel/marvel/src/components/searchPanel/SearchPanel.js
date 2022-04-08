@@ -25,11 +25,13 @@ const SearchPanel = () => {
         })
     }
 
+    
+
     useEffect(() => {
+        
         getName();
-        return () => {
-            getName();
-        }
+      
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -81,7 +83,7 @@ const SearchPanel = () => {
         onSubmit: async (values, { setSubmitting }) => {
             console.log(values);
             setSubmitting(true);
-            await sendValue(2000);
+           await sendValue(2000);
             setSubmitting(false);
 
         }

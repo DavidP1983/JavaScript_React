@@ -163,7 +163,7 @@ const RandomChar = (props) => {
     const [char, setChar] = useState({});
 
 
-    const { loading, error, getCharacter, clearError, process, setProcess } = useMarvelServices();
+    const { /*loading, error,*/ getCharacter, clearError, process, setProcess } = useMarvelServices();
 
 
     useEffect(() => {
@@ -171,6 +171,7 @@ const RandomChar = (props) => {
             updateChar();
         }
         console.log('mount');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

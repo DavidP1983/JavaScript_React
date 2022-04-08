@@ -206,13 +206,10 @@ const setContent = (process, newItemLoading, charEnded) => {
     switch (process) {
         case 'waiting':
             return <Spinner />;
-            break;
         case 'loading':
             return newItemLoading && !charEnded ? <Spinner /> : null ;
-            break;
         case 'confirmed':
             return null;
-            break;
         case 'error':
             return <ErrorMessage />;
         default:
@@ -230,7 +227,7 @@ const CharList = (props) => {
     const [offset, setOffset] = useState(1540);
     const [charEnded, setCharEnded] = useState(false);
 
-    const { error, getAllCharacters, process, setProcess } = useMarvelServices();
+    const { /*error,*/ getAllCharacters, process, setProcess } = useMarvelServices();
 
 
 
@@ -241,6 +238,7 @@ const CharList = (props) => {
             updateChar(offset);
             // updateChar(offset, true); with click button
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newItemLoading]);
 
 

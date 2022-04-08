@@ -23,7 +23,9 @@ const withSingleComicPage = (BaseComponent, getData) => props => {
 
 
     useEffect(() => {
+        
         updateComics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Id]);
 
     const updateComics = () => {

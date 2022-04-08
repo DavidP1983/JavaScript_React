@@ -166,10 +166,11 @@ const CharInfo = ({ charId }) => {
     // const [error, setError] = useState(false);
 
 
-    const { error, loading, getCharacter, clearError, process, setProcess } = useMarvelServices();
+    const { /*error, loading,*/ getCharacter, clearError, process, setProcess } = useMarvelServices();
 
     useEffect(() => {
         updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [charId]);
 
 
@@ -270,6 +271,7 @@ const View = ({ data }) => { //replace char on data
                 {
                     comics.map((item, i) => {
                         let comicsFromCharInfo = item.resourceURI.replace(/\D/g, '').slice(1);
+                        // eslint-disable-next-line array-callback-return
                         if (i > 9) return;
                         return (
                             <li className="char__comics-item" key={i}>

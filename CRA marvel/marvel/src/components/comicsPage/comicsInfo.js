@@ -3,27 +3,24 @@ import Avengers_logo from '../../resources/img/Avengers_logo.png';
 import Avengers from '../../resources/img/Avengers.png';
 // import Xmen from '../resources/img/x-men.png';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import useMarvelServices from '../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
 const setContent = (process, Component, newItemLoading) => {
-    switch(process) {
+    switch (process) {
         case 'waiting':
-            return <Spinner/>;
-            break;
+            return <Spinner />;
         case 'loading':
-            return newItemLoading  ? <Component/> : <Spinner/>;
-            break;
+            return newItemLoading ? <Component /> : <Spinner />;
         case 'confirmed':
-            return <Component/>;
-            break;
-        case 'error': 
-            return <ErrorMessage/>;
+            return <Component />;
+        case 'error':
+            return <ErrorMessage />;
         default:
             throw new Error('Unexpected process state');
     }
@@ -38,24 +35,25 @@ const ComicsPage = () => {
     const [offset, setOffset] = useState(210);
 
 
-    const { error, getAllComics,  process, setProcess } = useMarvelServices();
+    const { /*error,*/ getAllComics, process, setProcess } = useMarvelServices();
 
     useEffect(() => {
         updateComics(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const updateComics = (offset, initial) => {
         // setNewItemLoading(true);
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllComics(offset)
-        .then(onComicsLoaded)
-        .then(() => setProcess('confirmed'))
-        .finally(() => setNewItemLoading(false));
-    } 
+            .then(onComicsLoaded)
+            .then(() => setProcess('confirmed'))
+            .finally(() => setNewItemLoading(false));
+    }
 
     const onComicsLoaded = (newComicsChar) => {
         let ended = false;
-        if(newComicsChar.length < 8) {
+        if (newComicsChar.length < 8) {
             ended = true;
         }
         setComicsChar(comicsChar => [...comicsChar, ...newComicsChar]);
@@ -64,38 +62,41 @@ const ComicsPage = () => {
     }
 
     const myRef = useRef([]);
-    
-    const setRef = (refAdd, refRemove ) => {
 
-        hideElem(refRemove);
-        showElem(refAdd);
+    const setRef = (id) => {
+
+        myRef.current.forEach(item => item.classList.remove('selected'));
+        myRef.current[id].classList.add('selected');
+        // hideElem(refRemove);
+        // showElem(refAdd);
 
     }
 
-    const showElem = (ref) => ref.classList.add('selected');
-    const hideElem = (ref) => ref.map(item => item.classList.remove('selected'));
 
     const renderComicsList = (items) => {
         const list = items.map((item, i) => {
-            const {comicsId, title, comicsThumbnail, price} = item;
+            const { comicsId, title, comicsThumbnail, price } = item;
             const noPprice = price === 0 ? 'price not available' : `${price}$`;
-            const style = price === 0 ? {'width': '120px', 'color' : 'red'} : null;
-            return ( 
-               <li tabIndex={0} 
-               className="comics_item" 
-               key={i} 
-               ref={elem => myRef.current[i] = elem} 
-               onClick={() => setRef(myRef.current[i], myRef.current)}
-               onFocus={() => setRef(myRef.current[i], myRef.current)}>
-                <Link to={`/comics/${comicsId}`}>
-                    <img src={comicsThumbnail} alt={title} />
-                   <div className='comics_name'>{title}</div>
-                   <div className='comics_price' style={style}>{noPprice}</div>
-                </Link>
-                   {/* <img src={comicsThumbnail} alt={title} />
+            const style = price === 0 ? { 'width': '120px', 'color': 'red' } : null;
+            return (
+                <li
+                    className="comics_item"
+                    key={i}
+                    ref={elem => myRef.current[i] = elem}
+                    onFocus={() => setRef(i)}>
+
+                    <Link to={`/comics/${comicsId}`}
+                        tabIndex={0}
+                        style={{ outline: 'none' }}>
+                        <img src={comicsThumbnail} alt={title} />
+                        <div className='comics_name'>{title}</div>
+                        <div className='comics_price' style={style}>{noPprice}</div>
+                    </Link>
+                    {/* <img src={comicsThumbnail} alt={title} />
                    <div className='comics_name'>{title}</div>
                    <div className='comics_price' style={style}>{noPprice}</div> */}
-               </li>
+                </li>
+
             )
         });
 
@@ -106,10 +107,11 @@ const ComicsPage = () => {
         )
     }
 
-    
+
     // const comicsList = renderComicsList(comicsChar);
     // const errorMessage = error ? <ErrorMessage/> : null;
     // const spinner = newItemLoading && !charEnded  ? <Spinner/> : null;
+
 
     return (
         <div className='comics'>
@@ -173,9 +175,9 @@ const ComicsPage = () => {
                     </li>
                 </ul> */}
                 <button className="button button__main button__long"
-                        disabled={newItemLoading}
-                        style={{'display' : charEnded ? 'none' : 'block'}}
-                        onClick={() => updateComics(offset)}>
+                    disabled={newItemLoading}
+                    style={{ 'display': charEnded ? 'none' : 'block' }}
+                    onClick={() => updateComics(offset)}>
                     <div className="inner">load more</div>
                 </button>
 
