@@ -60,6 +60,7 @@ const ComicsPage = () => {
         setOffset(offset => offset + 8);
         setCharEnded(ended);
     }
+   
 
     const myRef = useRef([]);
 

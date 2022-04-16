@@ -85,7 +85,7 @@
 
 
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, /*Switch*/ Routes } from 'react-router-dom';
 import AppHeader from "../appHeader/AppHeader";
 import { SingleCharPage } from '../pages';
 
@@ -106,23 +106,23 @@ const App = () => {
                 <main>
                     {/* <RandomChar /> */}
                     <Suspense fallback={<span>Loading...</span>}>
-                        <Switch>
-                            <Route exact path="/">
-                                <MainPage />
-                            </Route>
-                            <Route exact path="/comics">
-                                <ComicPage />
-                            </Route>
-                            <Route exact path="/comics/:Id">
-                                <SingleComicPage />
-                            </Route>
-                            <Route exact path="/characters/:Id" >
-                                <SingleCharPage />
-                            </Route>
-                            <Route path="*">
-                                <Page404 />
-                            </Route>
-                        </Switch>
+                      <Routes>{/* <Switch> */}
+                            <Route exact path="/" element={ <MainPage/>} />
+                                {/* <MainPage /> */}
+                                {/* </Route> */}
+                            <Route exact path="/comics" element={ <ComicPage/>} />
+                                {/* <ComicPage /> */}
+                                {/* </Route> */}
+                            <Route exact path="/comics/:Id" element={ <SingleComicPage/>} />
+                                {/* <SingleComicPage /> */}
+                                {/* </Route> */}
+                             <Route exact path="/characters/:Id" element={ <SingleCharPage/>} />
+                                {/* <SingleCharPage /> */}
+                                {/* </Route> */}
+                            <Route path="*" element={ <Page404/>} />
+                                {/* <Page404 /> */}
+                                {/* </Route>  */}
+                        </Routes>{/* </Switch> */}
                     </Suspense>
 
                 </main>

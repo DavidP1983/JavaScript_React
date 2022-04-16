@@ -1,4 +1,4 @@
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, /*useHistory*/ useNavigate } from 'react-router-dom';
 
 import { useState, useEffect } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -102,7 +102,8 @@ const SingleComic = ({ content }) => {
 }
 
 const View = ({ data }) => {
-    let history = useHistory();
+    // let history = useHistory();
+    let navigate = useNavigate();
     const { comicsThumbnail, title, description, pages, language, price } = data;
     const noPprice = price === 0 ? 'price not available' : `${price} $`;
     return (
@@ -138,7 +139,9 @@ const View = ({ data }) => {
                     <div className="single-comic__price">{noPprice}</div>
                 </div>
                 {/* <Link to="/" className="single-comic__back">Back to all</Link> */}
-                <button className="single-comic__back" onClick={() => history.goBack()}>Back to all</button>
+                {/* <button className="single-comic__back" onClick={() => history.goBack()}>Back to all</button> */}
+                <button className="single-comic__back" onClick={() => navigate(-1)}>Back to all</button>
+
             </div>
 
         </>
@@ -157,7 +160,8 @@ const SingleChar = ({ contentChar }) => {
 }
 
 const ViewChar = ({ data }) => {
-    let history = useHistory();
+    // let history = useHistory();
+    let navigate = useNavigate();
     const { thumbnail, name, description } = data;
 
     return (
@@ -191,7 +195,9 @@ const ViewChar = ({ data }) => {
 
                 </div>
                 {/* <Link to="/" className="single-comic__back">Back to all</Link> */}
-                <button className="single-comic__back" onClick={() => history.goBack()}>Back to all</button>
+                {/* <button className="single-comic__back" onClick={() => history.goBack()}>Back to all</button> */}
+                <button className="single-comic__back" onClick={() => navigate(-1)}>Back to all</button>
+
             </div>
 
         </>

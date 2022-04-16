@@ -29,8 +29,8 @@ const SearchPanel = () => {
 
     useEffect(() => {
         
-        getName();
-      
+        getName(offset);
+            
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -38,9 +38,7 @@ const SearchPanel = () => {
         let time;
         if (disable) {
             time = setTimeout(() => setDisable(false), 2000);
-        } else {
-            return disable;
-        }
+        } 
         return () => {
             clearInterval(time);
         }
@@ -48,7 +46,7 @@ const SearchPanel = () => {
 
 
 
-    const getName = () => {
+    const getName = (offset) => {
 
         getAllCharacters(offset).then(name => setCharName(name));
     }

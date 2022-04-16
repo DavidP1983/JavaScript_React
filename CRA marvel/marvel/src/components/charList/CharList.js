@@ -285,6 +285,7 @@ const CharList = (props) => {
 
     }
 
+
     const style = {
         animation: `pop-in ${easings.easeInQuart} 700ms `
     }
@@ -310,7 +311,7 @@ const CharList = (props) => {
                     //instead of callback function setRef we will do all the stuff inside this map
                     ref={elem => myRefs.current[i] = elem}
                     className="char__item"
-                    key={item.id}
+                    key={i}
                     onClick={() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}
                     onFocus={() => props.onCharSelected(item.id, myRefs.current[i], myRefs.current)}>
                     <img src={item.thumbnail} alt={item.name} style={imgStyle} />
