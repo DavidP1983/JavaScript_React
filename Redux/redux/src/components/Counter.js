@@ -1,9 +1,15 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from '../actions';
+// import * as actions from '../actions';
 // import { bindActionCreators } from "redux";
+import {useSelector, useDispatch} from 'react-redux';
+import {inc, dec, rnd} from '../actions';
+
+
 
 // const Counter = ({counter, inc, dec, rnd}) => {
+
+
 //     return (
 //         <div className='jumbotron'>
 //         <h1>{counter}</h1>
@@ -15,25 +21,44 @@ import * as actions from '../actions';
 // }
 
 
-class Counter extends Component {
-  render() {
-    const {counter, inc, dec, rnd} = this.props;
+// class Counter extends Component {
+ 
+//   render() {
+
+//     const {counter, inc, dec, rnd} = this.props;
+//     return (
+//       <div className='jumbotron'>
+//            <h1>{counter}</h1>
+//            <button onClick={inc} className='btn btn-primary'>DEC</button>
+//            <button onClick={dec} className='btn btn-primary'>INC</button>
+//            <button onClick={rnd} className='btn btn-primary'>RND</button>
+//          </div>
+//     )
+//   }
+// }
+
+
+const Counter = () => {
+
+  const counter = useSelector(state => state.value);
+  const dispatch = useDispatch();
+
     return (
-      <div className='jumbotron'>
-           <h1>{counter}</h1>
-           <button onClick={inc} className='btn btn-primary'>DEC</button>
-           <button onClick={dec} className='btn btn-primary'>INC</button>
-           <button onClick={rnd} className='btn btn-primary'>RND</button>
-         </div>
+        <div className='jumbotron'>
+        <h1>{counter}</h1>
+        <button onClick={() => dispatch(inc())} className='btn btn-primary'>INC</button>
+        <button onClick={() => dispatch(dec())} className='btn btn-primary'>DEC</button>
+        <button onClick={() => dispatch(rnd())} className='btn btn-primary'>RND</button>
+      </div>
     )
-  }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    counter: state.value
-  }
-}
+// const mapStateToProps = (state) => {
+
+//   return {
+//     counter: state.value
+//   }
+// }
 
 // const mapDispatchToProps = (dispatch) => {
 //   const {inc, dec, rnd} = bindActionCreators(actions, dispatch);
@@ -54,4 +79,6 @@ const mapStateToProps = (state) => {
   
 // }
 
-export default connect(mapStateToProps, actions)(Counter);
+// export default connect(mapStateToProps, actions)(Counter);
+
+export default Counter;
