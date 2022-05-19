@@ -1,19 +1,22 @@
 import { useHttp } from "../../hooks/http.hook";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+// import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-
-import { heroesFetching, heroesFetched, heroesFetchingError } from "../../actions";
+import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
 
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
-import { animations } from 'react-animation'
 
-// import 'react-animation/dist/keyframes.css'
+// Задача для этого компонента:
+// При клике на "крестик" идет удаление персонажа из общего состояния
+// Усложненная задача:
+// Удаление идет и с json файла при помощи метода DELETE
+
 
 const HeroesList = () => {
-    const { heroes, filteredHeroes, heroesLoadingStatus } = useSelector(state => state);
+    const { filteredHeroes, heroesLoadingStatus } = useSelector(state => state);
     const dispatch = useDispatch();
     const { request } = useHttp();
 
@@ -27,38 +30,14 @@ const HeroesList = () => {
     }, []);
 
 
-    useEffect(() => {
-        deleteHeroeItem();
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
-   
-
-    const style = useMemo(() => {
-        return { animation: animations.popIn }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [heroes]);
-
-    // const style = { animation: animations.popIn }
-
     const deleteHeroeItem = useCallback((id) => {
-        if (!id) {
-            return;
-        }
-        dispatch(heroesFetching());
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-            .then(() => console.log(`${id} : Deleted`))
-            .catch(() => dispatch(heroesFetchingError()))
-
-        return {
-            heroes: dispatch(heroesFetched(heroes.filter(item => item.id !== id)))
-
-        }
+        request(`http://localhost:3001/heroes/${id}`, "DELETE")
+            .then(data => console.log(data, 'Deleted'))
+            .then(dispatch(heroeDeleted(id)))
+            .catch(err => console.log(err))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [heroes]);
+    }, [request]);
+
 
 
 
@@ -80,20 +59,25 @@ const HeroesList = () => {
 
         return arr.map(item => {
             const { id, ...props } = item;
-            return <HeroesListItem
-                style={style}
-                key={id}
-                {...props}
-                deleteHeroeItem={() => deleteHeroeItem(id)} />
+            return (
+
+                <HeroesListItem key={id} {...props} deleteHeroeItem={() => deleteHeroeItem(id)} />
+
+            )
         })
     }
 
     const elements = renderHeroesList(filteredHeroes);
 
     return (
+
         <ul>
             {elements}
         </ul>
+
+
+
+
 
     )
 }

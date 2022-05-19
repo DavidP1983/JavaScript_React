@@ -5,81 +5,60 @@
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
-// import classNames from 'classnames';
+import classNames from 'classnames';
+
+import { useHttp } from '../../hooks/http.hook';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import { activeFilterChanged, heroesFetching } from "../../actions";
+import { useEffect } from 'react';
+import { filtersFetching, filterFetched, filtersFetchingError, activeFilterChanged } from "../../actions";
 
-
-let classNames = require('classnames');
-
-
+import Spinner from '../spinner/Spinner';
 
 
 const HeroesFilters = () => {
-    const [active, setActive] = useState('all');
-
-    const { filters } = useSelector(state => state);
-
+    const { filters, filtersLoadingStatus, activeFilter } = useSelector(state => state);
     const dispatch = useDispatch();
+    const {request} = useHttp();
 
+
+    useEffect(() => {
+        dispatch(filtersFetching());
+        request("http://localhost:3001/filters")
+            .then(data => dispatch(filterFetched(data)))
+            .catch(() => dispatch(filtersFetchingError()))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+
+
+    if (filtersLoadingStatus === "loading") {
+        return <Spinner />
+    } else if (filtersLoadingStatus === "error") {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    }
 
 
 
     const renderButtons = (arr) => {
+        if (arr.length === 0) {
+            return <h5 className="text-center mt-5">Фильтры не найдены</h5>
+        }
 
-        return arr.map((item) => {
+        return arr.map(({name, className, label}) => {
 
-            let label;
-            switch (item) {
-                case 'all':
-                    label = "Все";
-                    break;
-                case 'fire':
-                    label = "Огонь";
-                    break;
-                case 'water':
-                    label = "Вода";
-                    break;
-                case "wind":
-                    label = "Ветер"
-                    break;
-                case 'earth':
-                    label = "Земля"
-                    break;
-                default:
-                    label = "Нет данных";
-            }
-            let activeClass = active === item ? 'active' : null;
 
-            let btnClass = classNames({
-                btn: true,
-                'btn-outline-dark': item === 'all',
-                'btn-outline-danger': item === 'fire',
-                'btn-outline-primary': item === 'water',
-                'btn-outline-success': item === 'wind',
-                'btn-outline-secondary': item === 'earth'
+            let btnClass = classNames('btn', className, {
+                'active': name === activeFilter
             });
 
             return <button
-                key={item}
-                className={`${btnClass} ${activeClass}`}
-                onClick={() => onUpdateFilter(item)}>
+                key={name}
+                id={name}
+                className={btnClass}
+                onClick={() => dispatch(activeFilterChanged(name))}>
                 {label}
             </button>
         })
     }
-
-
-
-
-    const onUpdateFilter = (filter) => {
-        setActive(filter);
-        console.log(filter);
-        dispatch(heroesFetching());
-        dispatch(activeFilterChanged(filter));
-    }
-
 
 
 

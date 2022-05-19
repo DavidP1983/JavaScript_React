@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/rules-of-hooks */
 
 // Задача для этого компонента:
@@ -10,92 +11,62 @@
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
 import { useHttp } from "../../hooks/http.hook";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from "react-redux";
 
 
-import { heroesFetching, heroesFetched, heroesFetchingError, filterFetched } from "../../actions";
+import { heroeCreated } from "../../actions";
 
 
 
 const HeroesAddForm = () => {
-    const { heroes, heroesLoadingStatus, filters } = useSelector(state => state);
+    const { filters, filtersLoadingStatus } = useSelector(state => state);
     const dispatch = useDispatch();
-    const [data, setData] = useState({});
     const { request } = useHttp();
 
-    // console.log(data);
+    const [heroName, setHeroName] = useState('');
+    const [heroDesc, setHeroDesc] = useState('');
+    const [heroElem, setHeroElem] = useState('');
 
- // Запрос к базе данных по фильтрам 
-    useEffect(() => {
-        dispatch(heroesFetching());
-        request("http://localhost:3001/filters")
-         .then(data => dispatch(filterFetched(data)))
-         .catch(() => dispatch(heroesFetchingError()))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
- // получения данных с инпутов
-    const onValueChange = (e) => {
-        const newItem = { [e.target.name]: e.target.value }
-        setData({ id: uuidv4().slice(2, 9), ...data, ...newItem });
-    }
-
-
- // отправка данных с инпута в базу heroes.json и в общий state
+    
     const onSubmitForm = (e) => {
         e.preventDefault();
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(data))
-            .then((data) => {
-                dispatch(heroesFetched([...heroes, data]))
-                console.log('Upload Success:', data)
+        const newHero = {
+            id: uuidv4(),
+            name: heroName,
+            description: heroDesc,
+            element: heroElem
+        }
+
+        request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
+            .then(data => console.log(data, 'Success'))
+            .then(() => dispatch(heroeCreated(newHero)))
+            .catch(err => console.log(err))
+
+            setHeroName('');
+            setHeroDesc('');
+            setHeroElem('');
+    }
+
+
+    const renderFilter = (filter, status) => {
+        if(status === 'loading') {
+            return <option>...Загрузка элементов</option>
+        }else if (status === 'error') {
+            return <option>Ошибка загрузки</option>
+        }
+
+        if(filter && filter.length > 0) {
+            return filter.map(({name, label}) => {
+
+                if(name === 'all') return;
+
+                return <option key={name} value={name}>{label}</option>
             })
-            .catch(() => dispatch(heroesFetchingError()))
-            .finally(() => setData(e.target.reset({})))
+        }
     }
 
- 
-
-     if (heroesLoadingStatus === "error") {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
-    }
-
-// <option></option> сформированный на базе данных
-    const renderFilter = (arr) => {
-       
-        return arr.map((item, i) => {
-           
-            let label;
-            switch (item) {
-                case 'all':
-                    label = "Я владею элементом...";
-                    break;
-                case 'fire':
-                    label = "Огонь";
-                    break;
-                case 'water':
-                    label = "Вода";
-                    break;
-                case "wind":
-                    label = "Ветер"
-                    break;
-                case 'earth':
-                    label = "Земля"
-                    break;
-                default:
-                    label = "Нет данных";
-            }
-    
-            return <option key={i} value={item}>{label}</option>
-        })
-    }
-
-   
-
-    const filterElements = renderFilter(filters);
- 
 
 
     return (
@@ -104,38 +75,41 @@ const HeroesAddForm = () => {
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input
                     required
-                    onChange={onValueChange}
                     type="text"
                     name="name"
                     className="form-control"
                     id="name"
-                    placeholder="Как меня зовут?" />
+                    placeholder="Как меня зовут?" 
+                    value={heroName}
+                    onChange={(e) => setHeroName(e.target.value)}/>
             </div>
             <div className="mb-3">
                 <label htmlFor="description" className="form-label fs-4">Описание</label>
                 <textarea
                     required
-                    onChange={onValueChange}
                     name="description"
                     id="text"
                     className="form-control"
                     placeholder="Что я умею?"
-                    style={{ "height": 130 }} />
+                    style={{ "height": 130 }} 
+                    value={heroDesc}
+                    onChange={(e) => setHeroDesc(e.target.value)}/>
             </div>
             <div className="mb-3">
                 <label htmlFor="element" className="form-label">Выбрать элемент героя</label>
                 <select
                     required
-                    onChange={onValueChange}
                     name="element"
                     id="element"
-                    className="form-select">
-                    {/* <option>Я владею элементом...</option>
-                    <option value="fire">Огонь</option>
+                    className="form-select"
+                    value={heroElem}
+                    onChange={(e) => setHeroElem(e.target.value)}>
+                    <option>Я владею элементом...</option>
+                    {/* <option value="fire">Огонь</option>
                     <option value="water">Вода</option>                 // Динамическая вставка   {filterElements}
                     <option value="wind">Ветер</option>
-                    <option value="earth">Земля</option> */}
-                    {filters.length === 0 ? <option>Загрузка...</option>: filterElements}
+                    <option value="earth">Земля</option>  */}
+                    {renderFilter(filters, filtersLoadingStatus)}
                 </select>
             </div>
             <button type="submit" className="btn btn-primary">Создать</button>
