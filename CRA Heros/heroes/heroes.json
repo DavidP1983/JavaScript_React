@@ -17,12 +17,6 @@
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
-    },
-    {
-      "id": "3abd9421-61c5-4861-ae2c-d4cd752662f0",
-      "name": "Hello Dav",
-      "description": "qqq",
-      "element": "earth"
     }
   ],
   "filters": [

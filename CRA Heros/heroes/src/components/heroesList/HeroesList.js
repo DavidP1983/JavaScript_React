@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { createSelector } from 'reselect'
 
-import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
+// import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
+import { fetchHeroes, heroeDeleted } from "../../actions";
 
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -47,11 +48,15 @@ const HeroesList = () => {
     const { request } = useHttp();
 
     useEffect(() => {
+        // dispatch( 'HEROES_FETCHING'); // enhancer, Middleware  only sting
+        // dispatch(heroesFetching);    // ReduxThunk, Middleware  functions
+
         // dispatch(heroesFetching());
-        dispatch( 'HEROES_FETCHING');
-        request("http://localhost:3001/heroes")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+        // request("http://localhost:3001/heroes")
+        //     .then(data => dispatch(heroesFetched(data)))
+        //     .catch(() => dispatch(heroesFetchingError()))
+
+        dispatch(fetchHeroes(request));
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

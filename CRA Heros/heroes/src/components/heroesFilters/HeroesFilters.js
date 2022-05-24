@@ -10,7 +10,9 @@ import classNames from 'classnames';
 import { useHttp } from '../../hooks/http.hook';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { filtersFetching, filterFetched, filtersFetchingError, activeFilterChanged } from "../../actions";
+// import { filtersFetching, filterFetched, filtersFetchingError, activeFilterChanged } from "../../actions";
+import { fetchFilters, activeFilterChanged } from "../../actions";
+
 
 import Spinner from '../spinner/Spinner';
 
@@ -22,10 +24,12 @@ const HeroesFilters = () => {
 
 
     useEffect(() => {
-        dispatch(filtersFetching());
-        request("http://localhost:3001/filters")
-            .then(data => dispatch(filterFetched(data)))
-            .catch(() => dispatch(filtersFetchingError()))
+        // dispatch(filtersFetching());
+        // request("http://localhost:3001/filters")
+        //     .then(data => dispatch(filterFetched(data)))
+        //     .catch(() => dispatch(filtersFetchingError()))
+
+        dispatch(fetchFilters(request));
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
