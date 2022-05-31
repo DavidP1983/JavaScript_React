@@ -1,3 +1,7 @@
+import { createAction } from "@reduxjs/toolkit";
+
+
+
 // ReduxThunk for heroes
 
 export const fetchHeroes = (request) => (dispatch) => {
@@ -9,9 +13,11 @@ export const fetchHeroes = (request) => (dispatch) => {
 
 //heroes
 
-export const heroesFetching = () => ({ type: 'HEROES_FETCHING' });
+// export const heroesFetching = () => ({ type: 'HEROES_FETCHING' });
+export const heroesFetching = createAction( 'HEROES_FETCHING' );
 
-export const heroesFetched = (heroes) => ({ type: 'HEROES_FETCHED', payload: heroes });
+// export const heroesFetched = (heroes) => ({ type: 'HEROES_FETCHED', payload: heroes });
+export const heroesFetched = createAction('HEROES_FETCHED')
 
 export const heroesFetchingError = () => ({ type: 'HEROES_FETCHING_ERROR' });
 
