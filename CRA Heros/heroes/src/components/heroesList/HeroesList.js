@@ -1,16 +1,19 @@
 import { useHttp } from "../../hooks/http.hook";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-// import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { createSelector } from 'reselect'
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { createSelector } from 'reselect';
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
 import { fetchHeroes, heroeDeleted } from "../../actions";
+
+
+import { easings } from "react-animation";
 
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
+import './style.css';
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
 // Усложненная задача:
@@ -81,20 +84,31 @@ const HeroesList = () => {
     }
 
 
-
+    const style = {
+        animation: `pop-in ${easings.easeInSine} 700ms forwards`
+      };
 
     const renderHeroesList = (arr) => {
         if (arr.length === 0) {
-            return <h5 className="text-center mt-5">Героев пока нет</h5>
+            return (
+                <CSSTransition
+                    timeout={0}
+                    classNames="heroe">
+                    <h5 className="text-center mt-5">Героев пока нет</h5>
+                </CSSTransition>
+            )
         }
 
 
         return arr.map(item => {
             const { id, ...props } = item;
             return (
-
-                <HeroesListItem key={id} {...props} deleteHeroeItem={() => deleteHeroeItem(id)} />
-
+                <CSSTransition
+                  key={id}
+                  timeout={1000}
+                  classNames="heroe">
+                <HeroesListItem  {...props} deleteHeroeItem={() => deleteHeroeItem(id)} />
+                </CSSTransition>
             )
         })
     }
@@ -102,12 +116,12 @@ const HeroesList = () => {
     const elements = renderHeroesList(filteredHeroes);
 
     return (
-
-        <ul>
+            // <ul>
+        <TransitionGroup component="ul" style={style}>
             {elements}
-        </ul>
+        </TransitionGroup>
 
-
+        // </ul>
 
 
 
