@@ -19,7 +19,8 @@ export const heroesFetching = createAction( 'HEROES_FETCHING' );
 // export const heroesFetched = (heroes) => ({ type: 'HEROES_FETCHED', payload: heroes });
 export const heroesFetched = createAction('HEROES_FETCHED')
 
-export const heroesFetchingError = () => ({ type: 'HEROES_FETCHING_ERROR' });
+// export const heroesFetchingError = () => ({ type: 'HEROES_FETCHING_ERROR' });
+export const heroesFetchingError = createAction('HEROES_FETCHING_ERROR');
 
 
 //active filter
@@ -53,6 +54,8 @@ export const filtersFetchingError = () => ({ type: 'FILTERS_FETCHING_ERROR' });
 
 // add, remove element
 
-export const heroeDeleted = (id) => ({ type: 'HERO_DELETED', payload: id });
+// export const heroeDeleted = (id) => ({ type: 'HERO_DELETED', payload: id });
+export const heroeDeleted = createAction('HERO_DELETED');
 
-export const heroeCreated = (heroe) => ({ type: 'HERO_CREATED', payload: heroe })
+// export const heroeCreated = (heroe) => ({ type: 'HERO_CREATED', payload: heroe });
+export const heroeCreated = createAction('HERO_CREATED');
