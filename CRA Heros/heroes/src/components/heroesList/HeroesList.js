@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { createSelector } from 'reselect';
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
-import { fetchHeroes, heroeDeleted } from "../../actions";
+import { fetchHeroes } from "../../actions";
+import {heroeDeleted} from './heroesSlice';
 
 
 import { easings } from "react-animation";
