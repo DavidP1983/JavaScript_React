@@ -2,10 +2,10 @@ import { useHttp } from "../../hooks/http.hook";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { createSelector } from 'reselect';
+import { createSelector } from '@reduxjs/toolkit';
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
-import { fetchHeroes } from "../../actions";
-import {heroeDeleted} from './heroesSlice';
+// import { fetchHeroes } from "../../actions";
+import {heroeDeleted, fetchHeroes} from './heroesSlice';
 
 
 import { easings } from "react-animation";
@@ -60,7 +60,7 @@ const HeroesList = () => {
         //     .then(data => dispatch(heroesFetched(data)))
         //     .catch(() => dispatch(heroesFetchingError()))
 
-        dispatch(fetchHeroes(request));
+        dispatch(fetchHeroes());
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
