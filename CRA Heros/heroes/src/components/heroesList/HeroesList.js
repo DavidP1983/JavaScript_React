@@ -2,10 +2,10 @@ import { useHttp } from "../../hooks/http.hook";
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { createSelector } from '@reduxjs/toolkit';
+// import { createSelector } from '@reduxjs/toolkit';
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
 // import { fetchHeroes } from "../../actions";
-import {heroeDeleted, fetchHeroes} from './heroesSlice';
+import {heroeDeleted, fetchHeroes, /*selectAll*/ filteredHeroesSelector} from './heroesSlice';
 
 
 import { easings } from "react-animation";
@@ -23,18 +23,19 @@ import './style.css';
 
 const HeroesList = () => {
 
-    const filteredHeroesSelector = createSelector(
-        (state) => state.filters.activeFilter,
-        (state) => state.heroes.heroes,
-        (filters, heroes) => {
-            if(filters === 'all') {
-                console.log('render');
-                return heroes;
-            }else {
-                return heroes.filter(item => item.element === filters);
-            }
-        }
-    );
+    // const filteredHeroesSelector = createSelector(
+    //     (state) => state.filters.activeFilter,
+    //     // (state) => state.heroes.heroes,
+    //     selectAll,
+    //     (filters, heroes) => {
+    //         if(filters === 'all') {
+    //             console.log('render');
+    //             return heroes;
+    //         }else {
+    //             return heroes.filter(item => item.element === filters);
+    //         }
+    //     }
+    // );
    
     // const filteredHeroes = useSelector(state => {
     //     if(state.filters.activeFilter === 'all') {

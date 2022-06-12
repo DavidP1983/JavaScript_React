@@ -17,11 +17,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 import { heroeCreated } from "../heroesList/heroesSlice";
+import {filter} from '../heroesFilters/filtersSlice';
 
 
 
 const HeroesAddForm = () => {
-    const { filters, filtersLoadingStatus } = useSelector(state => state.filters); 
+    const { /*filters,*/ filtersLoadingStatus } = useSelector(state => state.filters); 
+    const filters = useSelector(filter);
     const dispatch = useDispatch();
     const { request } = useHttp();
 

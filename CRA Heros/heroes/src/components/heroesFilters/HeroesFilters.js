@@ -13,14 +13,18 @@ import { useEffect } from 'react';
 // import { filtersFetching, filterFetched, filtersFetchingError, activeFilterChanged } from "../../actions";
 // import { fetchFilters, activeFilterChanged } from "../../actions";
 // import { fetchFilters } from '../../actions';
-import { activeFilterChanged, fetchFilters } from './filtersSlice';
+
+import { activeFilterChanged, fetchFilters, filter } from './filtersSlice';
 
 
 import Spinner from '../spinner/Spinner';
 
 
 const HeroesFilters = () => {
-    const { filters, filtersLoadingStatus, activeFilter } = useSelector(state => state.filters);
+
+
+    const { /*filters,*/ filtersLoadingStatus, activeFilter } = useSelector(state => state.filters);
+    const filters = useSelector(filter);
     const dispatch = useDispatch();
     // const {request} = useHttp();
 
