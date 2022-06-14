@@ -10,28 +10,32 @@
 // Дополнительно:
 // Элементы <option></option> желательно сформировать на базе
 // данных из фильтров
-import { useHttp } from "../../hooks/http.hook";
+// import { useHttp } from "../../hooks/http.hook";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, /*useDispatch*/ } from "react-redux";
 
 
-import { heroeCreated } from "../heroesList/heroesSlice";
+// import { heroeCreated } from "../heroesList/heroesSlice";
 import {filter} from '../heroesFilters/filtersSlice';
 
+import { useCreateHeroeMutation } from "../../api/apiSlice";
 
 
 const HeroesAddForm = () => {
-    const { /*filters,*/ filtersLoadingStatus } = useSelector(state => state.filters); 
+    // const { /*filters,*/ filtersLoadingStatus } = useSelector(state => state.filters); 
     const filters = useSelector(filter);
-    const dispatch = useDispatch();
-    const { request } = useHttp();
+    // const dispatch = useDispatch();
+    // const { request } = useHttp();
 
     const [heroName, setHeroName] = useState('');
     const [heroDesc, setHeroDesc] = useState('');
     const [heroElem, setHeroElem] = useState('');
 
     
+    const [heroeCreated, {isLoading, isError}] = useCreateHeroeMutation();
+
+
     const onSubmitForm = (e) => {
         e.preventDefault();
         const newHero = {
@@ -41,10 +45,11 @@ const HeroesAddForm = () => {
             element: heroElem
         }
 
-        request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
-            .then(data => console.log(data, 'Success'))
-            .then(() => dispatch(heroeCreated(newHero)))
-            .catch(err => console.log(err))
+        // request("http://localhost:3001/heroes", "POST", JSON.stringify(newHero))
+        //     .then(data => console.log(data, 'Success'))
+        //     .then(() => dispatch(heroeCreated(newHero)))
+        //     .catch(err => console.log(err))
+        heroeCreated(newHero).unwrap();
 
             setHeroName('');
             setHeroDesc('');
@@ -53,9 +58,14 @@ const HeroesAddForm = () => {
 
 
     const renderFilter = (filter, status) => {
-        if(status === 'loading') {
+        // if(status === 'loading') {
+        //     return <option>...Загрузка элементов</option>
+        // }else if (status === 'error') {
+        //     return <option>Ошибка загрузки</option>
+        // }
+        if(isLoading) {
             return <option>...Загрузка элементов</option>
-        }else if (status === 'error') {
+        }else if (isError) {
             return <option>Ошибка загрузки</option>
         }
 
@@ -111,7 +121,7 @@ const HeroesAddForm = () => {
                     <option value="water">Вода</option>                 // Динамическая вставка   {filterElements}
                     <option value="wind">Ветер</option>
                     <option value="earth">Земля</option>  */}
-                    {renderFilter(filters, filtersLoadingStatus)}
+                    {renderFilter(filters, /*filtersLoadingStatus*/)}
                 </select>
             </div>
             <button type="submit" className="btn btn-primary">Создать</button>

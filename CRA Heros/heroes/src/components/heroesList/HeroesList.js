@@ -1,11 +1,12 @@
-import { useHttp } from "../../hooks/http.hook";
-import { useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+// import { useHttp } from "../../hooks/http.hook";
+import { /*useEffect*/ useCallback, useMemo } from "react";
+import { useSelector, /*useDispatch*/ } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // import { createSelector } from '@reduxjs/toolkit';
 // import { heroesFetching, heroesFetched, heroesFetchingError, heroeDeleted } from "../../actions";
 // import { fetchHeroes } from "../../actions";
-import {heroeDeleted, fetchHeroes, /*selectAll*/ filteredHeroesSelector} from './heroesSlice';
+// import {heroeDeleted, fetchHeroes, /*selectAll*/ /*filteredHeroesSelector*/} from './heroesSlice';
+import { useGetHeroesQuery, useDeleteHeroeMutation } from "../../api/apiSlice";
 
 
 import { easings } from "react-animation";
@@ -45,46 +46,75 @@ const HeroesList = () => {
     //     }
     // })
 
-    
-    const filteredHeroes = useSelector(filteredHeroesSelector);
+    const {
+        data: heroes = [],
+        /*isFetching,*/
+        isLoading,
+        /*isSuccess,*/
+        isError,
+        /*error*/
+    } = useGetHeroesQuery();
 
-    const {heroesLoadingStatus} = useSelector(state => state.heroes);
-    const dispatch = useDispatch();
-    const { request } = useHttp();
+    const [heroeDeleted] = useDeleteHeroeMutation();
 
-    useEffect(() => {
-        // dispatch( 'HEROES_FETCHING'); // enhancer, Middleware  only sting
-        // dispatch(heroesFetching);    // ReduxThunk, Middleware  functions
+    const activeFilter = useSelector(state => state.filters.activeFilter);
 
-        // dispatch(heroesFetching());
-        // request("http://localhost:3001/heroes")
-        //     .then(data => dispatch(heroesFetched(data)))
-        //     .catch(() => dispatch(heroesFetchingError()))
+    const filteredHeroes = useMemo(() => {
+        const filteredHeroes = heroes.slice();
+        if (activeFilter === 'all') {
+            return filteredHeroes;
+        } else {
+            return filteredHeroes.filter(item => item.element === activeFilter);
+        }
+    }, [heroes,activeFilter]);
 
-        dispatch(fetchHeroes());
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // const filteredHeroes = useSelector(filteredHeroesSelector);
+    // const {heroesLoadingStatus} = useSelector(state => state.heroes);
+    // const dispatch = useDispatch();
+    // const { request } = useHttp();
+
+
+    // useEffect(() => {
+    //     // dispatch( 'HEROES_FETCHING'); // enhancer, Middleware  only sting
+    //     // dispatch(heroesFetching);    // ReduxThunk, Middleware  functions
+
+    //     // dispatch(heroesFetching());
+    //     // request("http://localhost:3001/heroes")
+    //     //     .then(data => dispatch(heroesFetched(data)))
+    //     //     .catch(() => dispatch(heroesFetchingError()))
+
+    //     dispatch(fetchHeroes());
+
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
 
     const deleteHeroeItem = useCallback((id) => {
-        request(`http://localhost:3001/heroes/${id}`, "DELETE")
-            .then(data => console.log(data, 'Deleted'))
-            .then(dispatch(heroeDeleted(id)))
-            .catch(err => console.log(err))
+        // request(`http://localhost:3001/heroes/${id}`, "DELETE")
+        //     .then(data => console.log(data, 'Deleted'))
+        //     .then(dispatch(heroeDeleted(id)))
+        //     .catch(err => console.log(err))
+
+        heroeDeleted(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [request]);
+    }, [/*request*/]);
 
 
 
 
 
-    if (heroesLoadingStatus === "loading") {
+    // if (heroesLoadingStatus === "loading") {
+    //     return <Spinner />
+    // } else if (heroesLoadingStatus === "error") {
+    //     return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    // }
+
+    if (isLoading) {
         return <Spinner />
-    } else if (heroesLoadingStatus === "error") {
+    } else if (isError) {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
-
 
     const style = {
         animation: `pop-in ${easings.easeInSine} 700ms forwards`
@@ -115,7 +145,9 @@ const HeroesList = () => {
         })
     }
 
+    // const elements = renderHeroesList(filteredHeroes);
     const elements = renderHeroesList(filteredHeroes);
+
 
     return (
             // <ul>
